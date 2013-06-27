@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dataConfig>
+  <dataSource type="JdbcDataSource"               
+			  driver="com.ibm.db2.jcc.DB2Driver"
+              url="jdbc:db2://192.168.3.238:50000/ctand" 
+              user="topicis" 
+              password="topicissjz" />
+  <document>
+    <entity name="MARPRIPINFO" 
+            query="select ID,entname,superorgid,REGNO,lerep,oploc,opscope,enttype,enttypeitem,industryphy,
+			substr(industryco,1,2) as industrycoda,
+			(case length(industryco)				
+				when 3 then industryco
+				when 4 then substr(industryco,1,3) 
+			end) as industrycoxi,
+			(case length(industryco)
+				when 4 then industryco 
+			end) as industrycoxiao,
+			venind,optype,state,regtype,opfrom,opto,apprdate from REG_MARPRIPINFO">
+			<field column="ID" name="id"/>
+			<field column="REGNO" name="regno"/>
+		 <entity name="entrecordno" query="select ARCHNO from REG_ENTRECORDNO where MARPRID='${MARPRIPINFO.ID}' and REGNO='${MARPRIPINFO.REGNO}'">
+                <field name="archno" column="ARCHNO" />
+         </entity>
+		 <entity name="creinfo" query="select CredLevel from CRE_CreInfo where MarPrID='${MARPRIPINFO.ID}'">
+                <field name="credLevel" column="CredLevel" />
+         </entity>
+    </entity>
+  </document>
+</dataConfig>
