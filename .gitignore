@@ -213,3 +213,20 @@ pip-log.txt
 
 #Mr Developer
 .mr.developer.cfg
+
+#lucene and solr data files
+*.fdt
+*.fdx
+*.fnm
+*.nvd
+*.nvm
+*.si
+*.pos
+*Lucene*.doc
+*.tim
+*.tip
+*.gen
+*.lock
+segments_ed
+segments_h
+tlog.*
