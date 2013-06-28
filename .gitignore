@@ -227,6 +227,6 @@ pip-log.txt
 *.tip
 *.gen
 *.lock
-segments_ed
-segments_h
+segments_*
 tlog.*
+/target
