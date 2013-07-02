@@ -145,10 +145,8 @@
    <field name="state" type="string" indexed="true" stored="true"/>
    <!--登记类型-->
    <field name="regtype" type="string" indexed="true" stored="true"/>
-   <!--经营日期起-->
-   <field name="opto" type="date" indexed="true" stored="true"/>
-   <!--经营日期止-->
-   <field name="opfrom" type="date" indexed="true" stored="true"/>
+   <!--成立日期-->
+   <field name="estDate" type="date" indexed="true" stored="true"/>
    <!--核准日期-->
    <field name="apprdate" type="date" indexed="true" stored="true"/>
    

@@ -16,7 +16,7 @@
 			(case length(industryco)
 				when 4 then industryco 
 			end) as industrycoxiao,
-			venind,optype,state,regtype,opfrom,opto,apprdate from REG_MARPRIPINFO">
+			venind,optype,state,regtype,estDate,apprdate from REG_MARPRIPINFO">
 			<field column="ID" name="id"/>
 			<field column="REGNO" name="regno"/>
 		 <entity name="entrecordno" query="select ARCHNO from REG_ENTRECORDNO where MARPRID='${MARPRIPINFO.ID}' and REGNO='${MARPRIPINFO.REGNO}'">
