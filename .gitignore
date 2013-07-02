@@ -232,3 +232,5 @@ tlog.*
 /target
 dataimport.properties
 web.xml
+*.dvd
+*.dvm
