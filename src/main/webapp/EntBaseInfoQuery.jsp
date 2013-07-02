@@ -1,4 +1,4 @@
-<%@ page pageEncoding="gbk"%>
+<%@ page pageEncoding="UTF-8"%>
 
 
 <%--
@@ -12,7 +12,7 @@
   Author:       leizhimin
   Modifier:     leizhimin
   Date:         2006-11-13 21:30:35
-  Readme:       ÆóÒµĞÅÏ¢×ÛºÏ²éÑ¯(¾­¼Ã»§¿Ú²éÑ¯)
+  Readme:       ä¼ä¸šä¿¡æ¯ç»¼åˆæŸ¥è¯¢(ç»æµæˆ·å£æŸ¥è¯¢)
 --%>
 
 
@@ -94,108 +94,147 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=GBK">
-    <title>ÏµÍ³Ö÷²Ù×÷ÇøÒ³ÃæÄ£°å</title>
+    <title>ç³»ç»Ÿä¸»æ“ä½œåŒºé¡µé¢æ¨¡æ¿</title>
     <%-- 
     <link rel="stylesheet" type="text/css" href="<%=rootPath%>/etc/common/style/topicms.css">
      <script type="text/javascript" src="<%=rootPath%>/etc/grid/grid.js"></script>
     <script type="text/javascript" src="<%=rootPath%>/etc/calendar/calendar.js"></script>   
     <script type="text/javascript" src="<%=rootPath%>/etc/common/script/topicms.js"></script>
     --%>
+    
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/jquery/themes/default/easyui.css" />
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/jquery/themes/icon.css" />
+    
+    
+    <script type="text/javascript" src="${pageContext.request.contextPath}/jquery/jquery-1.8.0.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/jquery/jquery.easyui.min.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/jquery/locale/easyui-lang-zh_CN.js"></script>
+	
+	
+	
 	<SCRIPT type="text/javascript">
 		function viewReport(){
-    	   //Æ´ ×°×ª·¢²ÎÊı
+    	   //æ‹¼ è£…è½¬å‘å‚æ•°
     	   var queryStr = "";
     	   if(document.all.qymc.value!=""){
-    	   	queryStr = "entname:" + document.all.qymc.value;//ÆóÒµÃû³Æ
+    	   	queryStr = encodeURIComponent(" +entname:") + encodeURIComponent(document.all.qymc.value);//ä¼ä¸šåç§°
     	  }
     	  if( document.all.gxdw.value){
-    	  	queryStr += " +superorgid:" + document.all.gxdw.value;//¹ÜÏ½µ¥Î»
+    	  	queryStr += encodeURIComponent(" +superorgid:") + encodeURIComponent(document.all.gxdw.value);//ç®¡è¾–å•ä½
     	  }
         
         if(document.all.zch.value!=""){
-        	queryStr += " +regno:" + document.all.zch.value;//×¢²áºÅ
+        	queryStr += encodeURIComponent(" +regno:") + encodeURIComponent(document.all.zch.value);//æ³¨å†Œå·
         	}
         //
         if(document.all.fddbr.value!=""){
-        	queryStr += " + lerep:" + document.all.fddbr.value;//·¨¶¨´ú±íÈË
+        	queryStr += encodeURIComponent(" +lerep:") + document.all.fddbr.value;//æ³•å®šä»£è¡¨äºº
         	}
        // 
        if(document.all.jydz.value!=""){
-       	queryStr += " + oploc:" + document.all.jydz.value;//¾­Óª³¡Ëù
+       	queryStr += encodeURIComponent(" +oploc:") + document.all.jydz.value;//ç»è¥åœºæ‰€
         	}
        // 
        if(document.all.dah.value!=""){
-        queryStr += " +archno:" + document.all.dah.value;//µµ°¸ºÅ
+        queryStr += encodeURIComponent(" +archno:") + document.all.dah.value;//æ¡£æ¡ˆå·
       	}
        if(document.all.jyfw.value!=""){
-       	queryStr += " + opscope:" + document.all.jyfw.value;//¾­Óª·¶Î§
+       	queryStr += encodeURIComponent(" +opscope:") + document.all.jyfw.value;//ç»è¥èŒƒå›´
         	}
        // 
        if(document.all.hmt.value!=""){
-       	queryStr += " + industryphy:" + document.all.hmt.value; //ĞĞÒµÃÅÀà
+       	queryStr += encodeURIComponent(" +industryphy:") + document.all.hmt.value; //è¡Œä¸šé—¨ç±»
         	}
        // 
        if(document.all.hmi.value!=""){
-       	queryStr += " + industryphy:" + document.all.hmi.value; //ĞĞÒµ´óÀà
+       	queryStr += encodeURIComponent(" +industryphy:") + document.all.hmi.value; //è¡Œä¸šå¤§ç±»
         	}
        // 
        if(document.all.xyjb.value!=""){
-       	queryStr += " + credLevel:" + document.all.xyjb.value;//ĞÅÓÃ¼¶±ğ
+       	queryStr += encodeURIComponent(" +credLevel:") + document.all.xyjb.value;//ä¿¡ç”¨çº§åˆ«
         	}
        // 
        if( document.all.hmm.value!=""){
-       	queryStr += " + industrycoxi:" + document.all.hmm.value;//ĞĞÒµÏ¸Àà 
+       	queryStr += encodeURIComponent(" +industrycoxi:") + document.all.hmm.value;//è¡Œä¸šç»†ç±» 
         	}
        // 
        if(document.all.hyxxl.value!=""){
-       	queryStr += " + industrycoxiao:" + document.all.hyxxl.value; //ĞĞÒµĞ¡Àà
+       	queryStr += encodeURIComponent(" +industrycoxiao:") + document.all.hyxxl.value; //è¡Œä¸šå°ç±»
         	}
        // 
        if( document.all.qylx_xl.value!=""){
-       	queryStr += " + enttypeitem:" + document.all.qylx_xl.value; //ÆóÒµÀàĞÍ-Ğ¡Àà
+       	queryStr += encodeURIComponent(" +enttypeitem:") + document.all.qylx_xl.value; //ä¼ä¸šç±»å‹-å°ç±»
         	}
        // 
        if(document.all.qylx_zl.value!=""){
-       	queryStr += " + enttype:" + document.all.qylx_zl.value; //ÆóÒµÖĞÀà
+       	queryStr += encodeURIComponent(" +enttype:") + document.all.qylx_zl.value; //ä¼ä¸šä¸­ç±»
         	}
        // 
       // if(document.all.zt.value!=""){
-       	// queryStr += " + state:" + document.all.zt.value;//ÆóÒµ×´Ì¬
+       	// queryStr += " + state:" + document.all.zt.value;//ä¼ä¸šçŠ¶æ€
         //	}
        //
        if( document.all.fxhy.value!=""){
-       	queryStr += " + venind:" + document.all.fxhy.value;//·çÏÕĞĞÒµ
+       	queryStr += encodeURIComponent(" +venind:") + document.all.fxhy.value;//é£é™©è¡Œä¸š
         	}
         //
         if(document.all.jylb.value!=""){
-        	queryStr += " + optype:" + document.all.jylb.value;//¾­ÓªÀà±ğ
+        	queryStr += encodeURIComponent(" +optype:") + document.all.jylb.value;//ç»è¥ç±»åˆ«
         	}
        // 
-     queryStr += " +opto:[1995-12-31T23:59:59Z   TO   *]"     
+     //queryStr += " +opto:[1995-12-31T23:59:59Z   TO   *]";   
        // if(document.all.cjrqq.value!=""&&document.all.cjrqz.value==""){
         	
         //}
         
-        //queryStr += " AND opto=" + document.all.cjrqq.value;//³ÉÁ¢ÈÕÆÚÆğ
-       // queryStr += " AND opfrom:" + document.all.cjrqz.value;//³ÉÁ¢ÈÕÆÚÖ¹
-        //queryStr += " AND apprdate:" + document.all.hzrqq.value;//ºË×¼ÈÕÆÚÆğ
-       // queryStr += " AND apprdate:" + document.all.hzrqz.value;//ºË×¼ÈÕÆÚÖ¹
+        //queryStr += " AND opto=" + document.all.cjrqq.value;//æˆç«‹æ—¥æœŸèµ·
+       // queryStr += " AND opfrom:" + document.all.cjrqz.value;//æˆç«‹æ—¥æœŸæ­¢
+        //queryStr += " AND apprdate:" + document.all.hzrqq.value;//æ ¸å‡†æ—¥æœŸèµ·
+       // queryStr += " AND apprdate:" + document.all.hzrqz.value;//æ ¸å‡†æ—¥æœŸæ­¢
        
        
        
        
        
-        //queryStr += " AND state:" + document.all.zt.value;//ÆóÒµ×´Ì¬
-        //queryStr += " AND venind:" + document.all.fxhy.value;//·çÏÕĞĞÒµ
-        //queryStr += " AND optype:" + document.all.jylb.value;//¾­ÓªÀà±ğ
-        //queryStr += " AND opto:" + document.all.cjrqq.value;//³ÉÁ¢ÈÕÆÚÆğ
-        //queryStr += " AND opfrom:" + document.all.cjrqz.value;//³ÉÁ¢ÈÕÆÚÖ¹
-        //queryStr += " AND apprdate:" + document.all.hzrqq.value;//ºË×¼ÈÕÆÚÆğ
-        //queryStr += " AND apprdate:" + document.all.hzrqz.value;//ºË×¼ÈÕÆÚÖ¹
-       
-        var app_path = "http://localhost:8080/solr/collection1/select?q="+queryStr;
+        //queryStr += " AND state:" + document.all.zt.value;//ä¼ä¸šçŠ¶æ€
+        //queryStr += " AND venind:" + document.all.fxhy.value;//é£é™©è¡Œä¸š
+        //queryStr += " AND optype:" + document.all.jylb.value;//ç»è¥ç±»åˆ«
+        //queryStr += " AND opto:" + document.all.cjrqq.value;//æˆç«‹æ—¥æœŸèµ·
+        //queryStr += " AND opfrom:" + document.all.cjrqz.value;//æˆç«‹æ—¥æœŸæ­¢
+        //queryStr += " AND apprdate:" + document.all.hzrqq.value;//æ ¸å‡†æ—¥æœŸèµ·
+        //queryStr += " AND apprdate:" + document.all.hzrqz.value;//æ ¸å‡†æ—¥æœŸæ­¢
         alert(queryStr);
-         window.location.href = encodeURI(app_path);
+        //queryStr = escape(queryStr);
+       
+        var app_path = "http://localhost:8080/solrDemo/collection1/select?q="+queryStr+"&wt=json&indent=true";
+        
+        init_station_grid(app_path);
+        
+       /*  $.ajax({
+            type : 'post',
+            url : app_path,
+            //data : param,
+            //dataType : "json",
+            success : function (data) {
+               alert(data);
+            },
+            error : function () {
+                alert("fail");
+            }
+        }); */
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        // window.location.href =app_path;
 
      		//&wt=xml&indent=true
      		//alert(queryStr);
@@ -208,6 +247,92 @@
    
     
     }
+		
+		
+		
+		function init_station_grid(app_path){
+			
+		    var _loader = function(param,success,error){
+		        var _this = $(this);
+		        var opts = _this.datagrid("options");
+		        if (!opts.url) {
+		            return false;
+		        }
+
+		        $.ajax({
+		                    type : opts.method,
+		                    url : opts.url,
+		                    //data : param,
+		                    dataType : "json",
+		                    success : function (data) {
+		                    	alert("123"+data);
+		                       alert(data.response.numFound);
+		                       alert(data.response.docs[0].entname);
+		                       var griddata={};
+		                       griddata.total=data.response.numFound;
+		                       griddata.rows=data.response.docs;
+		                    },
+		                    error : function () {
+		                        error.apply(this, arguments);
+		                    }
+		                });
+		    };
+			
+		
+		    $("#demoGrid").datagrid({
+		                title:'æŸ¥è¯¢ç»“æœå±•ç¤º',
+		                striped: true,
+		                fit: true,
+		                fitColumns: true,
+		                url:app_path,
+		                method: 'post',
+		                nowrap: true,
+		                loadMsg:'åŠ è½½ä¸­ï¼Œè¯·ç¨å..',
+		                loader: _loader,
+		                singleSelect:true,
+		                autoRowHeight: false,
+		                remoteSort: false,
+		                rownumbers:true,
+		                pagination:true,
+		                width:700,
+		    			height:250,
+		                columns:[[
+		                    {field:'entname',title:'ä¼ä¸šåç§°',width:80},
+		                    {field:'regno',title:'æ³¨å†Œå·',width:80}
+		                ]],
+		               
+		            });
+		    var pager =  $("#demoGrid").datagrid('getPager');
+		    pager.pagination({
+		                showPageList:false,
+		                pageSize:10,
+		                showPageList:false,
+		                onSelectPage:function(pageNumber, pageSize){
+		                    var param = {};
+		                    param =onSelectPageConds;
+		                    reloadGird(param,pageNumber,pager.pagination('options').pageSize, pager.pagination('options').total);
+		                }
+
+		            });
+
+		}
+		function reloadGird(param,pageNum, pageSize, total) {
+			$("#demoGrid").datagrid('reload', {stationName:param.stationName,
+		                stationType:param.stationType,organLevel:param.organLevel,pageNumber:pageNum,pageSize:pageSize,total:total});
+		}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
         var req;
        
         function Change_Select()
@@ -450,20 +575,20 @@
 </head>
 
 <body>
-<!--Ò³Ãæ±êÌâÀ¸begin-->
+<!--é¡µé¢æ ‡é¢˜æ begin-->
 <table border="0" cellpadding="0" cellspacing="0" class="table-location" align="center">
     <tr>
-        <td width="15%"><img src="/etc/common/images/moreblue.gif" width="21" height="10" alt="">&nbsp;ÄúËùÔÚÎ»ÖÃ£º
+        <td width="15%"><img src="/etc/common/images/moreblue.gif" width="21" height="10" alt="">&nbsp;æ‚¨æ‰€åœ¨ä½ç½®ï¼š
         </td>
         <td width="85%" align="left"><div id="pageTitle"></div></td>
     </tr>
 </table>
-<!--Ò³Ãæ±êÌâÀ¸end-->
-<!--Ò³Ãæ¿ò¼Übegin-->
+<!--é¡µé¢æ ‡é¢˜æ end-->
+<!--é¡µé¢æ¡†æ¶begin-->
 <table border="0" align="center" cellpadding="2" cellspacing="1" class="table-frame">
 <tr>
 <td>
-<!--ÄÚÈİÒ³Ãæbegin-->
+<!--å†…å®¹é¡µé¢begin-->
 
 
 <form name="FormName" method="post" action="#">
@@ -475,25 +600,25 @@
 
 
 <tr>
-    <td colspan="4" class="table-title">ÇëÊäÈë²éÑ¯Ìõ¼ş</td>
+    <td colspan="4" class="table-title">è¯·è¾“å…¥æŸ¥è¯¢æ¡ä»¶</td>
 </tr>
 <%--
-			   //¹ãÎ÷Ê¡
+			   //å¹¿è¥¿çœ
 			   if(PageComboxOptions.getSheng().equals("GUANGXI")){
 				--%>
 <tr>
-        <td><b>ËµÃ÷£º<b></td>
+        <td><b>è¯´æ˜ï¼š<b></td>
         <td colspan="3" class="two-content"><b>
-         ĞèÒª´òÓ¡×ÉÑ¯µ¥µÄÓÃ»§£¬Çëµ½¡°ÆóÒµ×ÉÑ¯µ¥´òÓ¡¡±²Ëµ¥½øĞĞ²éÑ¯´òÓ¡£¡<b>
+         éœ€è¦æ‰“å°å’¨è¯¢å•çš„ç”¨æˆ·ï¼Œè¯·åˆ°â€œä¼ä¸šå’¨è¯¢å•æ‰“å°â€èœå•è¿›è¡ŒæŸ¥è¯¢æ‰“å°ï¼<b>
         </td>
 </tr>
 <%--}--%>
 <tr>
-         <td>ÆóÒµÃû³Æ</td>
+         <td>ä¼ä¸šåç§°</td>
     <td  class="four-content">
         <input type="text" name="qymc" value="<%--=qymc--%>" >
     </td>
-    <td>ÊÇ·ñÒÑ·ÖÅä¹ÜÏ½µ¥Î»</td>
+    <td>æ˜¯å¦å·²åˆ†é…ç®¡è¾–å•ä½</td>
     <td class="four-content">
 <script>
 
@@ -513,16 +638,16 @@
 <%--
   if(PageComboxOptions.getSheng().equals("GUANGXI")) {
 --%>
-   <input name="rad2" type="radio" id ="r21"  value="block"  onClick ="show()"   style="width:auto"/>ÊÇ
-   <input name="rad2" type="radio" id ="r22"  value="none"   onClick="sel()"  style="width:auto"/>·ñ
-   <input name="rad2" type="radio" id ="r23"  value="none"   onClick="sel()" checked="checked"  style="width:auto"/>²»ÏŞÖÆ
+   <input name="rad2" type="radio" id ="r21"  value="block"  onClick ="show()"   style="width:auto"/>æ˜¯
+   <input name="rad2" type="radio" id ="r22"  value="none"   onClick="sel()"  style="width:auto"/>å¦
+   <input name="rad2" type="radio" id ="r23"  value="none"   onClick="sel()" checked="checked"  style="width:auto"/>ä¸é™åˆ¶
 
 <%--
 }else{	
 --%>
-  <input name="rad2" type="radio" id ="r21"  value="block" checked="checked" onClick ="show()"   style="width:auto"/>ÊÇ
-  <input name="rad2" type="radio" id ="r22"  value="none" onClick="sel()"  style="width:auto"/>·ñ
-  <input name="rad2" type="radio" id ="r23"  value="none" onClick="sel()"  style="width:auto"/>²»ÏŞÖÆ
+  <input name="rad2" type="radio" id ="r21"  value="block" checked="checked" onClick ="show()"   style="width:auto"/>æ˜¯
+  <input name="rad2" type="radio" id ="r22"  value="none" onClick="sel()"  style="width:auto"/>å¦
+  <input name="rad2" type="radio" id ="r23"  value="none" onClick="sel()"  style="width:auto"/>ä¸é™åˆ¶
 <%--
 }
 --%>
@@ -531,11 +656,11 @@
 </tr>
 
 <tr>
-     <td>×¢²áºÅ</td>
+     <td>æ³¨å†Œå·</td>
     <td class="four-content">
         <input type="text" name="zch" value="<%--=zch--%>">
     </td>
-    <td>·¨¶¨´ú±íÈË</td>
+    <td>æ³•å®šä»£è¡¨äºº</td>
     <td class="four-content">
         <input type="text" name="fddbr" value="<%--=fddbr--%>">
     </td>
@@ -543,26 +668,27 @@
 </tr>
 
 <tr>
-    <td>¾­Óª³¡Ëù</td>
+    <td>ç»è¥åœºæ‰€</td>
     <td class="four-content">
         <input type="text" name="jydz" value="<%--=jydz--%>" >
     </td>
-     <td>µµ°¸ºÅ</td>
+     <td>æ¡£æ¡ˆå·</td>
     <td class="four-content">
         <input type="text" name="dah" value="<%--=dah--%>">
     </td>
 </tr>
 <tr>
-    <td>¾­Óª·¶Î§</td>
+    <td>ç»è¥èŒƒå›´</td>
     <td colspan="3" class="two-content">
         <input type="text" name="jyfw" maxlength="100" value="<%--=jyfw--%>" class="input-longer">
     </td>
 </tr>
 <tr>
-    <td>ÆóÒµÀàĞÍ-ÖĞÀà</td>
+    <td>ä¼ä¸šç±»å‹-ä¸­ç±»</td>
     <td colspan="3" class="two-content">
         <select name="qylx_zl" id = "qylx_zl"   onchange="Change_Select()">
-         <option value="">--²»ÏŞÖÆ--</option>
+         <option value="">--ä¸é™åˆ¶--</option>
+         <option value="1100">1100-è´£ä»»æœ‰é™å…¬å¸</option>
 		 <%--
         out.println(PageComboxOptions.getOptionsQYLX());
 				--%>
@@ -570,10 +696,11 @@
     </td>
     </tr>
     <tr>
-    <td>ÆóÒµÀàĞÍ-Ğ¡Àà</td>
+    <td>ä¼ä¸šç±»å‹-å°ç±»</td>
     <td colspan="3" class="two-content">
         <select name="qylx_xl" id = "qylx_xl">
-		<option value="">--²»ÏŞÖÆ--</option>
+		<option value="">--ä¸é™åˆ¶--</option>
+         <option value="1110">1100-è´£ä»»æœ‰é™å…¬å¸(å›½æœ‰ç‹¬èµ„)</option>
         </select>
     </td>
 
@@ -581,35 +708,39 @@
 
 
 <tr>
-	<td>ĞĞÒµÃÅÀà</td>
+	<td>è¡Œä¸šé—¨ç±»</td>
 	 <td class="four-content" >
-	 <select name="hmt" id="hmt"  onchange="hylb_Select1()" class="long-select" alt="ĞĞÒµÃÅÀà">
-	   <option value="">--²»ÏŞÖÆ--</option>
+	 <select name="hmt" id="hmt"  onchange="hylb_Select1()" class="long-select" alt="è¡Œä¸šé—¨ç±»">
+	   <option value="">--ä¸é™åˆ¶--</option>
+	   <option value="A">A-å†œæ—ç‰§æ¸”</option>
 		 <%--
              out.println(PageComboxOptions.getOptionsHYLB());
 				--%>
 		</select>
 		</td>
-		<td>ĞĞÒµ´óÀà </td>
+		<td>è¡Œä¸šå¤§ç±» </td>
 		<td class="four-content">
-		<select name="hmi" id="hmi" onchange="hylb_dl_Select2()" class="long-select" alt="ĞĞÒµ´óÀà">
-		<option value="">--²»ÏŞÖÆ--</option>
+		<select name="hmi" id="hmi" onchange="hylb_dl_Select2()" class="long-select" alt="è¡Œä¸šå¤§ç±»">
+		<option value="">--ä¸é™åˆ¶--</option>
+		<option value="01">01-å†œä¸š</option>
 </select>
 </td>
 		</tr>
 
 <tr>	
-<td>ĞĞÒµÏ¸Àà</td>
+<td>è¡Œä¸šç»†ç±»</td>
 <td class="four-content">
-        <select name="hmm" id="hmm"  onchange="hylb_xl_Select3()" class="long-select" alt="ĞĞÒµÏ¸Àà">
-         <option value="">--²»ÏŞÖÆ--</option>
-
+        <select name="hmm" id="hmm"  onchange="hylb_xl_Select3()" class="long-select" alt="è¡Œä¸šç»†ç±»">
+         <option value="">--ä¸é™åˆ¶--</option>
+		<option value="011">011-è°·ç‰©ç§æ¤</option>
 </select>
 </td>
-<td>ĞĞÒµĞ¡Àà</td>
+<td>è¡Œä¸šå°ç±»</td>
 <td class="four-content">
-        <select name="hyxxl" id="hyxxl"  class="long-select" alt="ĞĞÒµĞ¡Àà">
-        <option value="">--²»ÏŞÖÆ--</option>
+        <select name="hyxxl" id="hyxxl"  class="long-select" alt="è¡Œä¸šå°ç±»">
+        <option value="">--ä¸é™åˆ¶--</option>
+        <option value="0111">01-ç¨»è°·ç§æ¤</option>
+        
 		 
 
 </select>
@@ -623,40 +754,40 @@
 
 
 <tr>
-    <td>·çÏÕĞĞÒµ</td>
+    <td>é£é™©è¡Œä¸š</td>
    <td class="four-content">
         <select name="fxhy">
-			<option value="">²»ÏŞÖÆ</option>
-            <option value="01">01-¼×¼¶·çÏÕ-Î£ÏÕ»¯Ñ§Æ·Éú²ú¡¢¾­Óª</option>
-                        <option value="02">02-¼×¼¶·çÏÕ-È¼ÆøÉú²úºÍ¹©Ó¦Òµ</option>
-                        <option value="03">03-¼×¼¶·çÏÕ-¿ó²ú×ÊÔ´¿ª²É</option>
-                        <option value="04">04-¼×¼¶·çÏÕ-Ê³Æ·Éú²ú¡¢¾­Óª</option>
-                        <option value="05">05-¼×¼¶·çÏÕ-²ÍÒûĞĞÒµ</option>
-                        <option value="06">06-¼×¼¶·çÏÕ-Ãñ±¬Æ÷²ÄºÍÑÌ»¨±¬ÖñÉú²ú¡¢¾­Óª</option>
-                        <option value="07">07-¼×¼¶·çÏÕ-¶¨µãÍÀÔ×</option>
-                        <option value="08">08-¼×¼¶·çÏÕ-¸÷Àà¿ÉÄÜ¶ÔÉúÌ¬»·¾³Ôì³ÉÑÏÖØÎÛÈ¾ºÍÆÆ»µµÄ</option>
-                        <option value="09">09-ÒÒ¼¶·çÏÕ-ÑÌ²İÖÆÆ·¾­Óª</option>
-                        <option value="10">10-ÒÒ¼¶·çÏÕ-Ò©Æ·¡¢Ò½ÁÆÆ÷ĞµµÄÉú²ú¡¢¾­Óª</option>
-                        <option value="11">11-ÒÒ¼¶·çÏÕ-»¯·Ê¡¢ÖÖ×ÓµÈÅ©ÒµÉú²ú×ÊÁÏµÄ¾­Óª</option>
-                        <option value="12">12-ÒÒ¼¶·çÏÕ-ÃŞ»¨¡¢²Ï¼ëÊÕ¹º¡¢¼Ó¹¤</option>
-                        <option value="13">13-ÒÒ¼¶·çÏÕ-»¥ÁªÍøÉÏÍø·şÎñ</option>
-                        <option value="14">14-ÒÒ¼¶·çÏÕ-ÎÄ»¯ÓéÀÖ·şÎñ</option>
-                        <option value="15">15-ÒÒ¼¶·çÏÕ-ÃÀÈİÃÀ·¢¡¢Ï´Ô¡¡¢×¡ËŞ</option>
-                        <option value="16">16-ÒÒ¼¶·çÏÕ-Ó¡Ë¢Òµ</option>
-                        <option value="17">17-ÒÒ¼¶·çÏÕ-Æû³µÎ¬ĞŞ¼°±¨·ÏÆû³µ»ØÊÕ</option>
-                        <option value="18">18-ÒÒ¼¶·çÏÕ-È¼Æø¾ß°²×°¡¢Î¬ĞŞ</option>
-						<option value="19">19-ÒÒ¼¶·çÏÕ-·Ï¾ÉÎïÆ·»ØÊÕ</option>
-						<option value="20">20-ÒÒ¼¶·çÏÕ-Ïû·À²úÆ·¾­Óª</option>
-						<option value="21">21-ÒÒ¼¶·çÏÕ-¸÷ÀàÖĞ½é»ú¹¹</option>
-						<option value="22">22-±û¼¶·çÏÕ-ÆäËûÀàĞÍ</option>
+			<option value="">ä¸é™åˆ¶</option>
+            <option value="01">01-ç”²çº§é£é™©-å±é™©åŒ–å­¦å“ç”Ÿäº§ã€ç»è¥</option>
+                        <option value="02">02-ç”²çº§é£é™©-ç‡ƒæ°”ç”Ÿäº§å’Œä¾›åº”ä¸š</option>
+                        <option value="03">03-ç”²çº§é£é™©-çŸ¿äº§èµ„æºå¼€é‡‡</option>
+                        <option value="04">04-ç”²çº§é£é™©-é£Ÿå“ç”Ÿäº§ã€ç»è¥</option>
+                        <option value="05">05-ç”²çº§é£é™©-é¤é¥®è¡Œä¸š</option>
+                        <option value="06">06-ç”²çº§é£é™©-æ°‘çˆ†å™¨æå’ŒçƒŸèŠ±çˆ†ç«¹ç”Ÿäº§ã€ç»è¥</option>
+                        <option value="07">07-ç”²çº§é£é™©-å®šç‚¹å± å®°</option>
+                        <option value="08">08-ç”²çº§é£é™©-å„ç±»å¯èƒ½å¯¹ç”Ÿæ€ç¯å¢ƒé€ æˆä¸¥é‡æ±¡æŸ“å’Œç ´åçš„</option>
+                        <option value="09">09-ä¹™çº§é£é™©-çƒŸè‰åˆ¶å“ç»è¥</option>
+                        <option value="10">10-ä¹™çº§é£é™©-è¯å“ã€åŒ»ç–—å™¨æ¢°çš„ç”Ÿäº§ã€ç»è¥</option>
+                        <option value="11">11-ä¹™çº§é£é™©-åŒ–è‚¥ã€ç§å­ç­‰å†œä¸šç”Ÿäº§èµ„æ–™çš„ç»è¥</option>
+                        <option value="12">12-ä¹™çº§é£é™©-æ£‰èŠ±ã€èš•èŒ§æ”¶è´­ã€åŠ å·¥</option>
+                        <option value="13">13-ä¹™çº§é£é™©-äº’è”ç½‘ä¸Šç½‘æœåŠ¡</option>
+                        <option value="14">14-ä¹™çº§é£é™©-æ–‡åŒ–å¨±ä¹æœåŠ¡</option>
+                        <option value="15">15-ä¹™çº§é£é™©-ç¾å®¹ç¾å‘ã€æ´—æµ´ã€ä½å®¿</option>
+                        <option value="16">16-ä¹™çº§é£é™©-å°åˆ·ä¸š</option>
+                        <option value="17">17-ä¹™çº§é£é™©-æ±½è½¦ç»´ä¿®åŠæŠ¥åºŸæ±½è½¦å›æ”¶</option>
+                        <option value="18">18-ä¹™çº§é£é™©-ç‡ƒæ°”å…·å®‰è£…ã€ç»´ä¿®</option>
+						<option value="19">19-ä¹™çº§é£é™©-åºŸæ—§ç‰©å“å›æ”¶</option>
+						<option value="20">20-ä¹™çº§é£é™©-æ¶ˆé˜²äº§å“ç»è¥</option>
+						<option value="21">21-ä¹™çº§é£é™©-å„ç±»ä¸­ä»‹æœºæ„</option>
+						<option value="22">22-ä¸™çº§é£é™©-å…¶ä»–ç±»å‹</option>
 
 
         </select>
     </td>
-	<td>ĞÅÓÃ¼¶±ğ</td>
+	<td>ä¿¡ç”¨çº§åˆ«</td>
     <td   class="four-content">
            <select name="xyjb">
-            <option value="">²»ÏŞÖÆ</option>            
+            <option value="">ä¸é™åˆ¶</option>            
             <option value="A">A</option>
             <option value="B">B</option>
             <option value="C">C</option>
@@ -667,10 +798,10 @@
 
 <tr>
 
-	 <td>¾­ÓªÀà±ğ</td>
+	 <td>ç»è¥ç±»åˆ«</td>
         <td   class="four-content">
             <select name="jylb" styleClass="long-select">
-                  <option value="" tourl="<%--=jylb--%>">²»ÏŞÖÆ</option>
+                  <option value="" tourl="<%--=jylb--%>">ä¸é™åˆ¶</option>
                    <%--
 
                         out.println(PageComboxOptions.getJylb());
@@ -680,39 +811,39 @@
         </td>
 
    
-     <td>ÆóÒµÊôĞÔ</td>
+     <td>ä¼ä¸šå±æ€§</td>
                          <td class="four-content">
                                  <input type="checkbox" name="qysx" id="qysx0" checked  style="width:auto"/>
-                                  ÄÚ  <input type="checkbox" name="qysx" id="qysx1" checked style="width:auto" />
-                                  Íâ  <input type="checkbox" name="qysx" id="qysx2" checked  style="width:auto" />
-                                  Ë½
+                                  å†…  <input type="checkbox" name="qysx" id="qysx1" checked style="width:auto" />
+                                  å¤–  <input type="checkbox" name="qysx" id="qysx2" checked  style="width:auto" />
+                                  ç§
                                   <input type="checkbox" name="qysx" id="qysx3" checked style="width:auto" />
-                                  ¸ö
+                                  ä¸ª
 								  <input type="checkbox" name="qysx" id="qysx4" checked style="width:auto" />
-                                  Å©ºÏ
+                                  å†œåˆ
                         </td>
 
 </tr>
 <tr>
-    <td>ÆóÒµ×´Ì¬</td>
+    <td>ä¼ä¸šçŠ¶æ€</td>
     <td class="four-content">
         <select name="zt">
-            <option value="">²»ÏŞÖÆ</option>
-			<option value="06" selected = true>ÔÚÒµ</option>
-            <option value="07">×¢Ïú</option>
-            <option value="11">µõÏú</option>
+            <option value="">ä¸é™åˆ¶</option>
+			<option value="06" selected = true>åœ¨ä¸š</option>
+            <option value="07">æ³¨é”€</option>
+            <option value="11">åŠé”€</option>
         </select>
     </td>
    
-    <td>µÇ¼ÇÀàĞÍ</td>
+    <td>ç™»è®°ç±»å‹</td>
     <td class="four-content">
         <select name="djlx">
-			<option value="">²»ÏŞÖÆ</option>
-            <option value="01">Õı³£</option>
-            <option value="02">±¸°¸</option>
-            <option value="03">Ç¨Èë</option>
-            <option value="04">¸ÄÖÆ</option>
-            <option value="05">¼¯ÍÅ</option>
+			<option value="">ä¸é™åˆ¶</option>
+            <option value="01">æ­£å¸¸</option>
+            <option value="02">å¤‡æ¡ˆ</option>
+            <option value="03">è¿å…¥</option>
+            <option value="04">æ”¹åˆ¶</option>
+            <option value="05">é›†å›¢</option>
         </select>
     </td>
    
@@ -721,11 +852,11 @@
 </tr>
 
 <tr>
-    <td>³ÉÁ¢ÈÕÆÚÆğ *</td>
+    <td>æˆç«‹æ—¥æœŸèµ· *</td>
     <td class="four-content">
         <input type="text" name="cjrqq" value="<%=cjrqq%>" id="calendar">
     </td>
-    <td>³ÉÁ¢ÈÕÆÚÖ¹ *</td>
+    <td>æˆç«‹æ—¥æœŸæ­¢ *</td>
     <td class="four-content">
         <input type="text" name="cjrqz" value="<%=cjrqz%>" id="calendar">
     </td>
@@ -733,18 +864,18 @@
 
 
 <tr>
-    <td>ºË×¼ÈÕÆÚÆğ *</td>
+    <td>æ ¸å‡†æ—¥æœŸèµ· *</td>
     <td class="four-content">
         <input type="text" name="hzrqq" value="<%=hzrqq%>" id="calendar">
     </td>
-    <td>ºË×¼ÈÕÆÚÖ¹ *</td>
+    <td>æ ¸å‡†æ—¥æœŸæ­¢ *</td>
     <td class="four-content">
         <input type="text" name="hzrqz" value="<%=hzrqz%>" id="calendar">
     </td>
 </tr>
 
 <tr id="trDJJGone">
-        <td>µÇ¼Ç»ú¹Ø</td>
+        <td>ç™»è®°æœºå…³</td>
         <td colspan="3" class="two-content">
             <select name="djjgone" styleClass="long-select">
                   <%--
@@ -758,7 +889,7 @@
         </td>
 </tr>
 <tr id="trDJJGtwo" style="display:none;">
-        <td>µÇ¼Ç»ú¹Ø</td>
+        <td>ç™»è®°æœºå…³</td>
         <td colspan="3" class="two-content">
             <select name="djjgtwo" styleClass="long-select">
                   <%--
@@ -774,7 +905,7 @@
 
 <tr>
                        <td colspan="2" class="two-content"  ><div align="right">
-                           <input type="checkbox" name="chk1" align="left"   title="ÊÇ·ñ²éÑ¯ÏÂ¼¶»ú¹ØËùµÇ¼ÇµÄÆóÒµ"style="width:auto"/>  Ñ¡ÖĞÔò²éÑ¯·¶Î§°üÀ¨ÏÂ¼¶µÇ¼Ç»ú¹Ø
+                           <input type="checkbox" name="chk1" align="left"   title="æ˜¯å¦æŸ¥è¯¢ä¸‹çº§æœºå…³æ‰€ç™»è®°çš„ä¼ä¸š"style="width:auto"/>  é€‰ä¸­åˆ™æŸ¥è¯¢èŒƒå›´åŒ…æ‹¬ä¸‹çº§ç™»è®°æœºå…³
                   </div>  </td>
 
 
@@ -790,7 +921,7 @@
   if(PageComboxOptions.getSheng().equals("GUANGXI")) {
 --%>
    <tr id="trGxdw" style="display:none;">
-        <td>¹ÜÏ½µ¥Î»</td>
+        <td>ç®¡è¾–å•ä½</td>
         <td colspan="3" class="two-content">
             <select name="gxdw" styleClass="long-select">
                    <%--
@@ -810,7 +941,7 @@
 
 <tr id="trGxdwkg" style="display:none;">
     <td colspan="2" class="two-content"  ><div align="right">
-         <input type="checkbox" name="chk2" title="ÊÇ·ñ²éÑ¯ÏÂ¼¶»ú¹ØËù¹ÜÏ½µÄÆóÒµ"    style="width:auto"/>  Ñ¡ÖĞÔò²éÑ¯·¶Î§°üÀ¨ÏÂ¼¶¹ÜÏ½»ú¹Ø</div>
+         <input type="checkbox" name="chk2" title="æ˜¯å¦æŸ¥è¯¢ä¸‹çº§æœºå…³æ‰€ç®¡è¾–çš„ä¼ä¸š"    style="width:auto"/>  é€‰ä¸­åˆ™æŸ¥è¯¢èŒƒå›´åŒ…æ‹¬ä¸‹çº§ç®¡è¾–æœºå…³</div>
         </td>
 
     <td >
@@ -825,7 +956,7 @@
 }else{	
 --%>
  <tr id="trGxdw" >
-        <td>¹ÜÏ½µ¥Î»</td>
+        <td>ç®¡è¾–å•ä½</td>
         <td colspan="3" class="two-content">
             <select name="gxdw" styleClass="long-select">
                    <%--
@@ -845,7 +976,7 @@
 
 <tr id="trGxdwkg">
     <td colspan="2" class="two-content"  ><div align="right">
-         <input type="checkbox" name="chk2" title="ÊÇ·ñ²éÑ¯ÏÂ¼¶»ú¹ØËù¹ÜÏ½µÄÆóÒµ"    style="width:auto"/>  Ñ¡ÖĞÔò²éÑ¯·¶Î§°üÀ¨ÏÂ¼¶¹ÜÏ½»ú¹Ø</div>
+         <input type="checkbox" name="chk2" title="æ˜¯å¦æŸ¥è¯¢ä¸‹çº§æœºå…³æ‰€ç®¡è¾–çš„ä¼ä¸š"    style="width:auto"/>  é€‰ä¸­åˆ™æŸ¥è¯¢èŒƒå›´åŒ…æ‹¬ä¸‹çº§ç®¡è¾–æœºå…³</div>
         </td>
 
     <td >
@@ -867,67 +998,93 @@
 <table class="table-button">
     <tr>
         <td>
-        <input type="button" name="viewReportB"  value="È·¶¨"  onclick="viewReport()"/>
+        <input type="button" name="viewReportB"  value="ç¡®å®š"  onclick="viewReport()"/>
             
 			<%--
-			   //ºÓÄÏÊ¡
+			   //æ²³å—çœ
 			   if(PageComboxOptions.getSheng().equals("HENAN")){  
 				--%>
 				
 				
 					
 			<%--
-				//°²»ÕÊ¡
+				//å®‰å¾½çœ
 				}	else if(PageComboxOptions.getSheng().equals("ANHUI")){
 			--%>
-			<input type="button" name="viewReportB"  value="È·¶¨"  onclick="viewReport()"/>
+			<input type="button" name="viewReportB"  value="ç¡®å®š"  onclick="viewReport()"/>
 			
 			<%--
-				//Çàº£Ê¡
+				//é’æµ·çœ
 				}	else if(PageComboxOptions.getSheng().equals("QINGHEI")){
 			--%>
-			<input type="button" name="viewReportB"  value="È·¶¨"  onclick="viewReport_qh()"/>
+			<input type="button" name="viewReportB"  value="ç¡®å®š"  onclick="viewReport_qh()"/>
 			
 
 			<%--
-				//Î÷²ØÊ¡
+				//è¥¿è—çœ
 				}	else if(PageComboxOptions.getSheng().equals("XIZANG")){
 			--%>
-			<input type="button" name="viewReportB"  value="È·¶¨"  onclick="viewReport_xz()"/>
+			<input type="button" name="viewReportB"  value="ç¡®å®š"  onclick="viewReport_xz()"/>
 			
 			<%--
-				//¹ãÎ÷Ê¡
+				//å¹¿è¥¿çœ
 				}	else if(PageComboxOptions.getSheng().equals("GUANGXI")){
 			--%>
-			<input type="button" name="viewReportB"  value="È·¶¨"  onclick="viewReport_gx()"/>
+			<input type="button" name="viewReportB"  value="ç¡®å®š"  onclick="viewReport_gx()"/>
 			
 
 			 <%--}--%>
-			 <input type="reset" class="cancle" value="ÖØÖÃ"/>
-			<input type="button" name="viewReportA"  value="ËµÃ÷"  onclick="viewReport1()"/>
+			 <input type="reset" class="cancle" value="é‡ç½®"/>
+			<input type="button" name="viewReportA"  value="è¯´æ˜"  onclick="viewReport1()"/>
                 
         </td>
     </tr>
 </table>
-</form>
 
 
-<!--ÄÚÈİÒ³Ãæend-->
+<table  style="width:700px;height:250px" >
+<tr>
+<td>
+<div data-options="region:'center',collapsed:false,border:false,height:360">
+ 	<table id="demoGrid"></table>
+<table class="easyui-datagrid" title="Basic DataGrid" style="width:700px;height:250px"
+			data-options="singleSelect:true,collapsible:true,url:'../datagrid/datagrid_data1.json'">
+		<thead>
+			<tr>
+				<th data-options="field:'itemid',width:80">Item ID</th>
+				<th data-options="field:'productid',width:100">Product</th>
+				<th data-options="field:'listprice',width:80,align:'right'">List Price</th>
+				<th data-options="field:'unitcost',width:80,align:'right'">Unit Cost</th>
+				<th data-options="field:'attr1',width:250">Attribute</th>
+				<th data-options="field:'status',width:60,align:'center'">Status</th>
+			</tr>
+		</thead>
+	</table>
+</div>
 </td>
 </tr>
 </table>
-<!--Ò³Ãæ¿ò¼Üend-->
+
+</form>
+
+
+<!--å†…å®¹é¡µé¢end-->
+</td>
+</tr>
+</table>
+<!--é¡µé¢æ¡†æ¶end-->
 </body>
 </html>
 <script language="javascript">
-    //Ò³ÃæÖĞ²åÈëtitle
-    document.all.pageTitle.innerHTML = "µÇ¼Ç²éÑ¯¡·ÆóÒµĞÅÏ¢×ÛºÏ²éÑ¯";
+
+    //é¡µé¢ä¸­æ’å…¥title
+    document.all.pageTitle.innerHTML = "ç™»è®°æŸ¥è¯¢ã€‹ä¼ä¸šä¿¡æ¯ç»¼åˆæŸ¥è¯¢";
 </script>
 
 
 
 <script type="text/javascript">
-    //getPageTitle();     //ÉèÖÃµ¼º½À¸µÄ±êÌâ
+    //getPageTitle();     //è®¾ç½®å¯¼èˆªæ çš„æ ‡é¢˜
 
 
 
@@ -938,7 +1095,7 @@
 }
 
     function viewReport9999999999999999() { 
-    	alert("111");   //Æ´×°×ª·¢²ÎÊı
+    	alert("111");   //æ‹¼è£…è½¬å‘å‚æ•°
         if (!isRequired())return false;
         var root_bb= document.URL  ;
                 //  root_bb= root_bb.slice(7) ;
@@ -1062,7 +1219,7 @@
             
         }
     }
-    function viewReport_xz() {    //Æ´×°×ª·¢²ÎÊı
+    function viewReport_xz() {    //æ‹¼è£…è½¬å‘å‚æ•°
         if (!isRequired())return false;
         var root_bb= document.URL  ;
                 //  root_bb= root_bb.slice(7) ;
@@ -1183,7 +1340,7 @@
             
         }
     }
-	function viewReport_gx() {    //Æ´×°×ª·¢²ÎÊı
+	function viewReport_gx() {    //æ‹¼è£…è½¬å‘å‚æ•°
         if (!isRequired())return false;
         var root_bb= document.URL  ;
                 //  root_bb= root_bb.slice(7) ;
@@ -1305,7 +1462,7 @@
         }
     }
 
-	 function viewReport_qh() {    //Æ´×°×ª·¢²ÎÊı
+	 function viewReport_qh() {    //æ‹¼è£…è½¬å‘å‚æ•°
         if (!isRequired())return false;
         var root_bb= document.URL  ;
                 //  root_bb= root_bb.slice(7) ;
@@ -1426,41 +1583,41 @@
             
         }
     }
-    function isRequired() { //¼ì²éÈÕÆÚÊäÈëÓò
+    function isRequired() { //æ£€æŸ¥æ—¥æœŸè¾“å…¥åŸŸ
         var cjrqq = document.all.cjrqq.value;
         var cjrqz = document.all.cjrqz.value;
         var hzrqq = document.all.hzrqq.value;
         var hzrqz = document.all.hzrqz.value;
         if (cjrqq == "" && cjrqz == "") {
-            alert("ÇëÊäÈë¡°³ÉÁ¢ÈÕÆÚÆğ¡±ºÍ¡°³ÉÁ¢ÈÕÆÚÖ¹¡±£¡");
+            alert("è¯·è¾“å…¥â€œæˆç«‹æ—¥æœŸèµ·â€å’Œâ€œæˆç«‹æ—¥æœŸæ­¢â€ï¼");
             return false;
         }
         if (hzrqq == "" && hzrqz == "") {
-            alert("ÇëÊäÈë¡°ºË×¼ÈÕÆÚÆğ¡±ºÍ¡°ºË×¼ÈÕÆÚÖ¹¡±£¡");
+            alert("è¯·è¾“å…¥â€œæ ¸å‡†æ—¥æœŸèµ·â€å’Œâ€œæ ¸å‡†æ—¥æœŸæ­¢â€ï¼");
             return false;
         }
         if (cjrqq == "") {
-            alert("ÇëÊäÈë¡°³ÉÁ¢ÈÕÆÚÆğ¡±£¡");
+            alert("è¯·è¾“å…¥â€œæˆç«‹æ—¥æœŸèµ·â€ï¼");
             return false;
         }
         if (hzrqq == "") {
-            alert("ÇëÊäÈë¡°ºË×¼ÈÕÆÚÆğ¡±£¡");
+            alert("è¯·è¾“å…¥â€œæ ¸å‡†æ—¥æœŸèµ·â€ï¼");
             return false;
         }
         if (cjrqz == "") {
-            alert("ÇëÊäÈë¡°³ÉÁ¢ÈÕÆÚÖ¹¡±£¡");
+            alert("è¯·è¾“å…¥â€œæˆç«‹æ—¥æœŸæ­¢â€ï¼");
             return false;
         }
         if (hzrqz == "") {
-            alert("ÇëÊäÈë¡°ºË×¼ÈÕÆÚÖ¹¡±£¡");
+            alert("è¯·è¾“å…¥â€œæ ¸å‡†æ—¥æœŸæ­¢â€ï¼");
             return false;
         }
         if (!checkStrDate(cjrqq, cjrqz)) {
-            alert("¡°³ÉÁ¢ÈÕÆÚÖ¹¡±²»ÄÜÔçÓÚ¡°³ÉÁ¢ÈÕÆÚÆğ£¡");
+            alert("â€œæˆç«‹æ—¥æœŸæ­¢â€ä¸èƒ½æ—©äºâ€œæˆç«‹æ—¥æœŸèµ·ï¼");
             return false;
         }
         if (!checkStrDate(hzrqq, hzrqz)) {
-            alert("¡°ºË×¼ÈÕÆÚÖ¹¡±²»ÄÜÔçÓÚ¡°ºË×¼ÈÕÆÚÆğ£¡");
+            alert("â€œæ ¸å‡†æ—¥æœŸæ­¢â€ä¸èƒ½æ—©äºâ€œæ ¸å‡†æ—¥æœŸèµ·ï¼");
             return false;
         } else {
             return true;
