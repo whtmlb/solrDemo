@@ -341,9 +341,9 @@
 			var end  = app_path.indexOf("&rows");
 			//alert("end: "+end);
 			if(start==-1&&end==-1){
-				app_path = $("#demoGrid").datagrid("options").url = app_path+"&start="+((pageNum-1)*pageSize+1)+"&rows=10";
+				app_path = $("#demoGrid").datagrid("options").url = app_path+"&start="+((pageNum-1)*pageSize)+"&rows=10";
 			}else{
-				app_path = $("#demoGrid").datagrid("options").url = app_path.substr(0,start)+"&start="+((pageNum-1)*pageSize+1)+"&rows=10";
+				app_path = $("#demoGrid").datagrid("options").url = app_path.substr(0,start)+"&start="+((pageNum-1)*pageSize)+"&rows=10";
 				
 			}
 			//alert(app_path);
