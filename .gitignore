@@ -230,3 +230,5 @@ pip-log.txt
 segments_*
 tlog.*
 /target
+dataimport.properties
+web.xml
