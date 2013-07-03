@@ -113,6 +113,7 @@
 	
 	
 	<SCRIPT type="text/javascript">
+	var app_path= "";
 		function viewReport(){
     	   //拼 装转发参数
     	   var queryStr = "";
@@ -203,12 +204,14 @@
         //queryStr += " AND opfrom:" + document.all.cjrqz.value;//成立日期止
         //queryStr += " AND apprdate:" + document.all.hzrqq.value;//核准日期起
         //queryStr += " AND apprdate:" + document.all.hzrqz.value;//核准日期止
-        alert(queryStr);
+
         //queryStr = escape(queryStr);
        
-        var app_path = "http://localhost:8080/solrDemo/collection1/select?q="+queryStr+"&wt=json&indent=true";
+        app_path = "http://localhost:8080/solrDemo/collection1/select?q="+queryStr+"&wt=json&indent=true";
+        //window.location.href =app_path;
         
-        init_station_grid(app_path);
+       //init_demo_grid(app_path);
+      init_ent_grid(app_path);
         
        /*  $.ajax({
             type : 'post',
@@ -250,7 +253,10 @@
 		
 		
 		
-		function init_station_grid(app_path){
+		function init_ent_grid(app_path){ 
+			
+			var totals = 0;
+			var row ;
 			
 		    var _loader = function(param,success,error){
 		        var _this = $(this);
@@ -265,12 +271,11 @@
 		                    //data : param,
 		                    dataType : "json",
 		                    success : function (data) {
-		                    	alert("123"+data);
-		                       alert(data.response.numFound);
-		                       alert(data.response.docs[0].entname);
-		                       var griddata={};
-		                       griddata.total=data.response.numFound;
-		                       griddata.rows=data.response.docs;
+		                      //alert(data.response.numFound);
+		                     // alert(1234567890);
+		                      totals=data.response.numFound;
+             				  row= data.response.docs;
+             				 success(row);
 		                    },
 		                    error : function () {
 		                        error.apply(this, arguments);
@@ -296,6 +301,13 @@
 		                pagination:true,
 		                width:700,
 		    			height:250,
+		    			loadFilter:function(r){
+	                    	   r = {
+	               					total:totals,
+	               					rows: row
+	               				};
+	                    	   return r;
+	                    },
 		                columns:[[
 		                    {field:'entname',title:'企业名称',width:80},
 		                    {field:'regno',title:'注册号',width:80}
@@ -304,22 +316,133 @@
 		            });
 		    var pager =  $("#demoGrid").datagrid('getPager');
 		    pager.pagination({
-		                showPageList:false,
-		                pageSize:10,
-		                showPageList:false,
-		                onSelectPage:function(pageNumber, pageSize){
-		                    var param = {};
-		                    param =onSelectPageConds;
-		                    reloadGird(param,pageNumber,pager.pagination('options').pageSize, pager.pagination('options').total);
-		                }
+		    			pageSize:10,
+				    	showPageList:false,
+						showRefresh:false,
+						onSelectPage:function(number, size) {
+							debugger;
+							reloadGird(number,size,pager.pagination('options').total);
+						},
+						onBeforeRefresh:function(number, size){
+							clearGrid();
+						}
 
 		            });
+		    
+		    
+		    
+		    
+		    
+		} 
+		
+		function reloadGird( pageNum, pageSize, total) {
+			var start = app_path.indexOf("&start");
+			//alert("start: "+start);
+			var end  = app_path.indexOf("&rows");
+			//alert("end: "+end);
+			if(start==-1&&end==-1){
+				app_path = $("#demoGrid").datagrid("options").url = app_path+"&start="+((pageNum-1)*pageSize)+"&rows=10";
+			}else{
+				app_path = $("#demoGrid").datagrid("options").url = app_path.substr(0,start)+"&start="+((pageNum-1)*pageSize)+"&rows=10";
+				
+			}
+			//alert(app_path);
+			 $("#demoGrid").datagrid('reload');
+		}
+		
+		
+		
+		
+		
+		function init_demo_grid(url){
+			$('#dg').datagrid({loadFilter:pagerFilter}).datagrid('loadData', getData(url));
+		}
+		
+		function getData(url){
+			var rows=[];
+			
+			  $.ajax({
+                  type : "post",
+                  url : url,
+                  //data : param,
+                  dataType : "json",
+                  async:false,
+                  success : function (data) {
+                	 
+                     alert(data.response.numFound);
+                    /* 
+                     var griddata={};
+                     griddata.total=data.response.numFound;
+                     griddata.rows=data.response.docs; */
+                     alert(data.response.docs);
+                     
+                     
+                     rows = data.response.docs;
+                     /* for(var i=1; i<=data.response.numFound; i++){
+                    	 rows.push({
+         					entname: 'Ientname '+i,
+         					regno: $.fn.datebox.defaults.formatter(new Date()),
 
+         				});
+                     } */
+                  },
+                  error : function () {
+                      error.apply(this, arguments);
+                  }
+              });
+			
+			
+			
+			
+			
+			
+			
+			/* var rows = [];
+			for(var i=1; i<=800; i++){
+				var amount = Math.floor(Math.random()*1000);
+				var price = Math.floor(Math.random()*1000);
+				rows.push({
+					entname: 'Ientname '+i,
+					regno: $.fn.datebox.defaults.formatter(new Date()),
+
+				});
+			} */
+			alert(rows.length);
+			return rows;
 		}
-		function reloadGird(param,pageNum, pageSize, total) {
-			$("#demoGrid").datagrid('reload', {stationName:param.stationName,
-		                stationType:param.stationType,organLevel:param.organLevel,pageNumber:pageNum,pageSize:pageSize,total:total});
+		
+		function pagerFilter(data){
+			
+			if (typeof data.length == 'number' && typeof data.splice == 'function'){	// is array
+				data = {
+					total: data.length,
+					rows: data
+				}
+			}
+			var dg = $(this);
+			var opts = dg.datagrid('options');
+			var pager = dg.datagrid('getPager');
+			pager.pagination({
+				onSelectPage:function(pageNum, pageSize){
+					opts.pageNumber = pageNum;
+					opts.pageSize = pageSize;
+					pager.pagination('refresh',{
+						pageNumber:pageNum,
+						pageSize:pageSize
+					});
+					dg.datagrid('loadData',data);
+				}
+			});
+			if (!data.originalRows){
+				data.originalRows = (data.rows);
+			}
+			var start = (opts.pageNumber-1)*parseInt(opts.pageSize);
+			var end = start + parseInt(opts.pageSize);
+			data.rows = (data.originalRows.slice(start, end));
+			return data;
 		}
+		
+		
 		
 		
 		
@@ -802,11 +925,11 @@
         <td   class="four-content">
             <select name="jylb" styleClass="long-select">
                   <option value="" tourl="<%--=jylb--%>">不限制</option>
-                   <%--
+                 
 
-                        out.println(PageComboxOptions.getJylb());
+<!--                         out.println(PageComboxOptions.getJylb()); -->
 
-               -- %>
+               
             </select>
         </td>
 
@@ -854,11 +977,11 @@
 <tr>
     <td>成立日期起 *</td>
     <td class="four-content">
-        <input type="text" name="cjrqq" value="<%=cjrqq%>" id="calendar">
+        <input type="text" name="cjrqq" value="<%--=cjrqq--%>" id="calendar">
     </td>
     <td>成立日期止 *</td>
     <td class="four-content">
-        <input type="text" name="cjrqz" value="<%=cjrqz%>" id="calendar">
+        <input type="text" name="cjrqz" value="<%--=cjrqz--%>" id="calendar">
     </td>
 </tr>
 
@@ -866,11 +989,11 @@
 <tr>
     <td>核准日期起 *</td>
     <td class="four-content">
-        <input type="text" name="hzrqq" value="<%=hzrqq%>" id="calendar">
+        <input type="text" name="hzrqq" value="<%--=hzrqq--%>" id="calendar">
     </td>
     <td>核准日期止 *</td>
     <td class="four-content">
-        <input type="text" name="hzrqz" value="<%=hzrqz%>" id="calendar">
+        <input type="text" name="hzrqz" value="<%--=hzrqz--%>" id="calendar">
     </td>
 </tr>
 
@@ -878,13 +1001,13 @@
         <td>登记机关</td>
         <td colspan="3" class="two-content">
             <select name="djjgone" styleClass="long-select">
-                  <%--
-                    if ("".equals(porgid)) {
+               
+                   <!--  if ("".equals(porgid)) {
                            out.println(PageComboxOptions.getOptionsJG(orgid));
                     } else {
                         out.println(PageComboxOptions.getNoSctWithPorgidOptionsDJJG(orgid));
-                    }
-                --%>
+                    } -->
+               
             </select>
         </td>
 </tr>
@@ -1011,26 +1134,26 @@
 				//安徽省
 				}	else if(PageComboxOptions.getSheng().equals("ANHUI")){
 			--%>
-			<input type="button" name="viewReportB"  value="确定"  onclick="viewReport()"/>
+<!-- 			<input type="button" name="viewReportB"  value="确定"  onclick="viewReport()"/> -->
 			
 			<%--
 				//青海省
 				}	else if(PageComboxOptions.getSheng().equals("QINGHEI")){
 			--%>
-			<input type="button" name="viewReportB"  value="确定"  onclick="viewReport_qh()"/>
+<!-- 			<input type="button" name="viewReportB"  value="确定"  onclick="viewReport_qh()"/> -->
 			
 
 			<%--
 				//西藏省
 				}	else if(PageComboxOptions.getSheng().equals("XIZANG")){
 			--%>
-			<input type="button" name="viewReportB"  value="确定"  onclick="viewReport_xz()"/>
+<!-- 			<input type="button" name="viewReportB"  value="确定"  onclick="viewReport_xz()"/> -->
 			
 			<%--
 				//广西省
 				}	else if(PageComboxOptions.getSheng().equals("GUANGXI")){
 			--%>
-			<input type="button" name="viewReportB"  value="确定"  onclick="viewReport_gx()"/>
+<!-- 			<input type="button" name="viewReportB"  value="确定"  onclick="viewReport_gx()"/> -->
 			
 
 			 <%--}--%>
@@ -1046,20 +1169,20 @@
 <tr>
 <td>
 <div data-options="region:'center',collapsed:false,border:false,height:360">
- 	<table id="demoGrid"></table>
-<table class="easyui-datagrid" title="Basic DataGrid" style="width:700px;height:250px"
-			data-options="singleSelect:true,collapsible:true,url:'../datagrid/datagrid_data1.json'">
+<table id="demoGrid"></table> 
+ <table id="dg" title="Client Side Pagination" style="width:700px;height:300px" data-options="
+				rownumbers:true,
+				singleSelect:true,
+				autoRowHeight:false,
+				pagination:true,
+				pageSize:10">
 		<thead>
 			<tr>
-				<th data-options="field:'itemid',width:80">Item ID</th>
-				<th data-options="field:'productid',width:100">Product</th>
-				<th data-options="field:'listprice',width:80,align:'right'">List Price</th>
-				<th data-options="field:'unitcost',width:80,align:'right'">Unit Cost</th>
-				<th data-options="field:'attr1',width:250">Attribute</th>
-				<th data-options="field:'status',width:60,align:'center'">Status</th>
+				<!-- <th field="entname" width="80">公司名称</th>
+				<th field="regno" width="100">注册号</th> -->
 			</tr>
 		</thead>
-	</table>
+	</table> 
 </div>
 </td>
 </tr>
