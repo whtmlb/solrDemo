@@ -140,7 +140,8 @@
    <field name="credLevel" type="string" indexed="true" stored="true"/>
    <!--经营类别-->
    <field name="optype" type="string" indexed="true" stored="true"/>
-   <!--企业属性  暂时搁置-->
+   <!--企业属性-->
+   <field name="enttypepro" type="string" indexed="true" stored="true"/>
    <!--企业状态-->
    <field name="state" type="string" indexed="true" stored="true"/>
    <!--登记类型-->
@@ -149,9 +150,12 @@
    <field name="estDate" type="date" indexed="true" stored="true"/>
    <!--核准日期-->
    <field name="apprdate" type="date" indexed="true" stored="true"/>
-   
-   <!--登记机关 暂时搁置-->
-   <!--管辖单位 暂时搁置-->     
+   <!--管辖单位上级单位标识-->
+   <field name="superzidid" type="string" indexed="true" stored="true" multiValued="true" />
+   <!--登记机关-->
+   <field name="orgId" type="string" indexed="true" stored="true" />
+   <!--登记机关的下级登记机关-->
+   <field name="regzidid" type="string" indexed="true" stored="true" multiValued="true" />   
    <!-- Common metadata fields, named specifically to match up with
      SolrCell metadata when parsing rich documents such as Word, PDF.
      Some fields are multiValued only because Tika currently may return
