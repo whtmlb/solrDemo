@@ -17,7 +17,7 @@
 			(case length(industryco)
 				when 4 then industryco 
 			end) as industrycoxiao,
-			venind,optype,enttypepro,state,regtype,estDate,apprdate,ORGID from REG_MARPRIPINFO">
+			venind,optype,enttypepro,state,regtype,estDate,apprdate,ORGID from REG_MARPRIPINFO where regtype!='02'">
 			<field column="ID" name="id"/>
 			<field column="REGNO" name="regno"/>
 			<field column="SUPERORGID" name="superorgid"/>
