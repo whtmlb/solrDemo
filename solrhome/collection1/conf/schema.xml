@@ -151,11 +151,11 @@
    <!--核准日期-->
    <field name="apprdate" type="date" indexed="true" stored="true"/>
    <!--管辖单位上级单位标识-->
-   <field name="superzidid" type="string" indexed="true" stored="true" multiValued="true" />
+   <field name="superrootid" type="string" indexed="true" stored="true" multiValued="true" />
    <!--登记机关-->
    <field name="orgId" type="string" indexed="true" stored="true" />
-   <!--登记机关的下级登记机关-->
-   <field name="regzidid" type="string" indexed="true" stored="true" multiValued="true" />   
+   <!--登记机关的上级登记机关-->
+   <field name="regrootid" type="string" indexed="true" stored="true" multiValued="true" />   
    <!-- Common metadata fields, named specifically to match up with
      SolrCell metadata when parsing rich documents such as Word, PDF.
      Some fields are multiValued only because Tika currently may return
@@ -385,18 +385,22 @@
 	 also applies synonyms. -->
     <fieldType name="text_general" class="solr.TextField" positionIncrementGap="100">
       <analyzer type="index">
-	    <tokenizer class="solr.ChineseTokenizerFactory"/>
+		<tokenizer class="solr.ChineseTokenizerFactory"/>
+	    <!--<tokenizer class="solr.SmartChineseSentenceTokenizerFactory"/>-->
         <filter class="solr.StopFilterFactory" ignoreCase="true" words="stopwords.txt" enablePositionIncrements="true" />
         <!-- in this example, we will only use synonyms at query time
         <filter class="solr.SynonymFilterFactory" synonyms="index_synonyms.txt" ignoreCase="true" expand="false"/>
         -->
         <filter class="solr.LowerCaseFilterFactory"/>
 		<filter class="solr.ChineseFilterFactory"/>
+		<!--<filter class="solr.SmartChineseWordTokenFilterFactory"/>-->
       </analyzer>
       <analyzer type="query">
-	  	<tokenizer class="solr.ChineseTokenizerFactory"/>
+		<tokenizer class="solr.ChineseTokenizerFactory"/>
+	  	<!--<tokenizer class="solr.SmartChineseSentenceTokenizerFactory"/>-->
         <filter class="solr.LowerCaseFilterFactory"/>
 		<filter class="solr.ChineseFilterFactory"/>
+		<!--<filter class="solr.SmartChineseWordTokenFilterFactory"/>-->
       </analyzer>
     </fieldType>
 	<fieldType name="text_general_num" class="solr.TextField" positionIncrementGap="100">

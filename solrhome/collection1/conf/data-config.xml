@@ -4,6 +4,7 @@
 			  driver="com.ibm.db2.jcc.DB2Driver"
               url="jdbc:db2://192.168.3.238:50000/ctand" 
               user="topicis" 
+			  batchSize="200"
               password="topicissjz" />
   <document>
     <entity name="MARPRIPINFO" 
@@ -19,7 +20,7 @@
 			venind,optype,enttypepro,state,regtype,estDate,apprdate,ORGID from REG_MARPRIPINFO">
 			<field column="ID" name="id"/>
 			<field column="REGNO" name="regno"/>
-			<field column="SUPERORGID" name="superOrgID"/>
+			<field column="SUPERORGID" name="superorgid"/>
 			<field column="orgId" name="ORGID"/>
 		 <entity name="entrecordno" query="select ARCHNO from REG_ENTRECORDNO where MARPRID='${MARPRIPINFO.ID}' and REGNO='${MARPRIPINFO.REGNO}'">
                 <field name="archno" column="ARCHNO" />
@@ -27,11 +28,11 @@
 		 <entity name="creinfo" query="select CredLevel from CRE_CreInfo where MarPrID='${MARPRIPINFO.ID}'">
                 <field name="credLevel" column="CredLevel" />
          </entity>
-		 <entity name="v_organ" query="select ZID from V_ORGAN  where ('${MARPRIPINFO.SUPERORGID}' is not null and '${MARPRIPINFO.SUPERORGID}' != '') and ROOTID='${MARPRIPINFO.SUPERORGID}'">
-                <field name="superzidid" column="ZID" />
+		 <entity name="v_organ_reg" query="select ROOTID from V_ORGAN  where ('${MARPRIPINFO.ORGID}' is not null and '${MARPRIPINFO.ORGID}' != '') and ZID='${MARPRIPINFO.ORGID}'">
+                <field name="regrootid" column="ROOTID" />
          </entity>
-		 <entity name="v_organ_reg" query="select ZID from V_ORGAN  where ('${MARPRIPINFO.ORGID}' is not null and '${MARPRIPINFO.ORGID}' != '') and ROOTID='${MARPRIPINFO.ORGID}'">
-                <field name="regzidid" column="ZID" />
+		 <entity name="v_organ" query="select ROOTID from V_ORGAN  where ('${MARPRIPINFO.SUPERORGID}' is not null and '${MARPRIPINFO.SUPERORGID}' != '') and ZID='${MARPRIPINFO.SUPERORGID}'">
+                <field name="superrootid" column="ROOTID" />
          </entity>
     </entity>
   </document>
