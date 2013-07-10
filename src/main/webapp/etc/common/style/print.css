@@ -1,0 +1,114 @@
+/*
+	TopICMS系统打印页面样式表
+	AUTHOR:孔凡刚
+	CHANGE BY:康志强,LKY
+	DATE:2005-8-05
+*/
+body {
+	font-size: 12px;
+	color: #4b4b4b;
+	left: 0px;
+	top: 0px;
+	right: 0px;
+	bottom: 0px;
+	margin: 0px;
+}
+.printTable {
+	width: 100%;
+	text-align: center;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+	border-bottom-color: #6699CC;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	background-color: #dfe8f3;
+}
+.printBotton {
+	font-size: 12px;
+	color: #003366;
+	background-color: #dfe8f3;
+	background-image: url(../images/inputOk.gif);
+	background-repeat: no-repeat;
+	text-align: center;
+	vertical-align: bottom;
+	height: 23px;
+	width: 45px;
+	border: none;
+	cursor: hand;
+}
+.printExit {
+	font-size: 12px;
+	color: #003366;
+	background-color: #dfe8f3;
+	background-image: url(../images/inputOk.gif);
+	background-repeat: no-repeat;
+	text-align: center;
+	vertical-align: bottom;
+	height: 23px;
+	width: 45px;
+	border: none;
+	cursor: hand;
+}
+.printView{
+	font-size: 12px;
+	color: #003366;
+	background-color: #dfe8f3;
+	background-image: url(../images/bottonFontLong.gif);
+	text-align: center;
+	vertical-align: bottom;
+	border: none;
+	height: 23px;
+	width: 80px;
+	cursor: hand;
+}
+   /*文本框*/
+    .input-under-line {
+        color: #404040;
+        background-color: #FFFFFF;
+        font-size: 9pt;
+        border-bottom: 1px solid #404040;
+        margin-top: 0px;
+        margin-right: 0px;
+        margin-bottom: 1px;
+        margin-left: 0px;
+        padding-top: 0px;
+        padding-right: 0px;
+        padding-bottom: 1px;
+        padding-left: 0px;
+        border-top-width: 1px;
+        border-right-width: 1px;
+        border-left-width: 1px;
+        border-top-style: solid;
+        border-right-style: solid;
+        border-left-style: solid;
+        border-top-color: #FFFFFF;
+        border-right-color: #FFFFFF;
+        border-left-color: #FFFFFF;
+    }
+
+    /*文本域*/
+    .textArea-under-line {
+        width: 96.5%;
+        color: #404040;
+        background-color: #FFFFFF;
+        font-size: 9pt;
+        border-bottom: 1px solid #404040;
+        margin-top: 0px;
+        margin-right: 0px;
+        margin-bottom: 1px;
+        margin-left: 0px;
+        padding-top: 0px;
+        padding-right: 0px;
+        padding-bottom: 1px;
+        padding-left: 0px;
+        border-top-width: 1px;
+        border-right-width: 1px;
+        border-left-width: 1px;
+        border-top-style: solid;
+        border-right-style: solid;
+        border-left-style: solid;
+        border-top-color: #FFFFFF;
+        border-right-color: #FFFFFF;
+        border-left-color: #FFFFFF;
+        scrollbar-face-color: #FFFFFF;scrollbar-shadow-color: #FFFFFF;scrollbar-highlight-color: #FFFFFF;scrollbar-3dlight-color: #FFFFFF;scrollbar-darkshadow-color: #FFFFFF;scrollbar-track-color: #FFFFFF;scrollbar-arrow-color: #FFFFFF
+    }
