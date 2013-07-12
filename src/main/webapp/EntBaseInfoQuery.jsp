@@ -118,39 +118,40 @@
 
 <script type="text/javascript">
 	var app_path= "";
-	function viewReport(){
+	function viewReport(){  
    	   //拼 装转发参数
    	   var queryStr = "";
    	   if(document.all.qymc.value!=""){
-   	   		queryStr = encodeURIComponent(" +entname:") + encodeURIComponent(document.all.qymc.value);//企业名称
+   	   		queryStr = encodeURIComponent(' +entname:') + encodeURIComponent('"'+document.all.qymc.value+'"');//企业名称
 	   }
-	   if( document.all.gxdw.value){
-	   	  	queryStr += encodeURIComponent(" +superorgid:") + encodeURIComponent(document.all.gxdw.value);//管辖单位
-	   }
+	  
       
 	   if(document.all.zch.value!=""){
-	     	queryStr += encodeURIComponent(" +regno:") + encodeURIComponent(document.all.zch.value);//注册号
+	     	queryStr += encodeURIComponent(" +regno:") + encodeURIComponent('*'+document.all.zch.value);//注册号
 	   }
 	   if(document.all.fddbr.value!=""){
-	     	queryStr += encodeURIComponent(" +lerep:") + encodeURIComponent(document.all.fddbr.value);//法定代表人
+	     	queryStr += encodeURIComponent(" +lerep:") + encodeURIComponent('"'+document.all.fddbr.value+'"');//法定代表人
 	   }
        if(document.all.jydz.value!=""){
-       		queryStr += encodeURIComponent(" +oploc:") + encodeURIComponent(document.all.jydz.value);//经营场所
+       		queryStr += encodeURIComponent(" +oploc:") + encodeURIComponent('"'+document.all.jydz.value+'"');//经营场所
        }
        if(document.all.dah.value!=""){
-        	queryStr += encodeURIComponent(" +archno:") + encodeURIComponent(document.all.dah.value);//档案号
+        	queryStr += encodeURIComponent(" +archno:") + encodeURIComponent('*'+document.all.dah.value);//档案号
        }
        if(document.all.jyfw.value!=""){
-       		queryStr += encodeURIComponent(" +opscope:") + encodeURIComponent(document.all.jyfw.value);//经营范围
+       		queryStr += encodeURIComponent(" +opscope:") + encodeURIComponent('"'+document.all.jyfw.value+'"');//经营范围
+       }
+       if(document.all.qylx_zl.value!=""){
+       		queryStr += encodeURIComponent(" +enttype:") + encodeURIComponent(document.all.qylx_zl.value); //企业中类
+       }
+       if( document.all.qylx_xl.value!=""){
+       		queryStr += encodeURIComponent(" +enttypeitem:") + encodeURIComponent(document.all.qylx_xl.value); //企业类型-小类
        }
        if(document.all.hmt.value!=""){
        		queryStr += encodeURIComponent(" +industryphy:") + encodeURIComponent(document.all.hmt.value); //行业门类
        }
        if(document.all.hmi.value!=""){
-       		queryStr += encodeURIComponent(" +industryphy:") + encodeURIComponent(document.all.hmi.value); //行业大类
-       }
-       if(document.all.xyjb.value!=""){
-       		queryStr += encodeURIComponent(" +credLevel:") + encodeURIComponent(document.all.xyjb.value);//信用级别
+       		queryStr += encodeURIComponent(" +industrycoda:") + encodeURIComponent(document.all.hmi.value); //行业大类
        }
        if( document.all.hmm.value!=""){
        		queryStr += encodeURIComponent(" +industrycoxi:") + encodeURIComponent(document.all.hmm.value);//行业细类 
@@ -158,53 +159,70 @@
        if(document.all.hyxxl.value!=""){
        		queryStr += encodeURIComponent(" +industrycoxiao:") + encodeURIComponent(document.all.hyxxl.value); //行业小类
        }
-       if( document.all.qylx_xl.value!=""){
-       		queryStr += encodeURIComponent(" +enttypeitem:") + encodeURIComponent(document.all.qylx_xl.value); //企业类型-小类
-       }
-       if(document.all.qylx_zl.value!=""){
-       		queryStr += encodeURIComponent(" +enttype:") + encodeURIComponent(document.all.qylx_zl.value); //企业中类
-       }
-       if(document.all.zt.value!=""){
-      		queryStr += encodeURIComponent(" + state:") + encodeURIComponent(document.all.zt.value);//企业状态
-       }  
        if( document.all.fxhy.value!=""){
        		queryStr += encodeURIComponent(" +venind:") + document.all.fxhy.value;//风险行业
+       }
+       if(document.all.xyjb.value!=""){
+       		queryStr += encodeURIComponent(" +credLevel:") + encodeURIComponent(document.all.xyjb.value);//信用级别
        }
        if(document.all.jylb.value!=""){
         	queryStr += encodeURIComponent(" +optype:") + document.all.jylb.value;//经营类别
        }
-       
+       //企业属性
        var qysx =  document.all.qysx;
-       var nzkg =  qysx[0].checked?'01':'';
+       /* var nzkg =  qysx[0].checked?'01':'';
        var wzkg =  qysx[1].checked?'02':'';
        var sykg =  qysx[2].checked?'03':'';
        var gtkg =  qysx[3].checked?'04':'';
-       var nhkg =  qysx[4].checked?'07':''; 
+       var nhkg =  qysx[4].checked?'07':'';  */
        
-       //var or_conds = ""; 
        var is_fist = true;
        for(var i = 0;i<qysx.length;i++){
-    	   //alert(qysx[i]+":    "+i);
     	   var value = qysx[i].checked?'0'+(i+1):'';
+    	   if(i==4)
+    		  value = qysx[i].checked?'07':'';
     	   
     	   if(value!=""){
     		   if(is_fist){
     			   is_fist = false;
     			   queryStr += encodeURIComponent(" +(enttypepro:")+ encodeURIComponent(value);
-    			   //or_conds+=" +(enttypepro:"+value;
-    			   //alert(123+" :     "+or_conds);
     		   }else{
     			   queryStr += encodeURIComponent(" OR enttypepro:")+ encodeURIComponent(value);
-    			   //or_conds+=" or enttypepro:"+value;
-    			  // alert(456+" :     "+or_conds);
     		   }
     	   }
        }
        if(!is_fist){
     	   queryStr += encodeURIComponent(" )");
-    	   //or_conds+=")";
        }
-      // alert("or_conds:    "+or_conds);
+       
+       if(document.all.zt.value!=""){
+      		queryStr += encodeURIComponent(" +state:") + encodeURIComponent(document.all.zt.value);//企业状态
+       } 
+       
+       if(document.all.djlx.value!=""){
+     		queryStr += encodeURIComponent(" +regtype:") + encodeURIComponent(document.all.djlx.value);//regtype 登记类型
+       } 
+       
+       var include_orgId = document.all.chk1;
+       //alert(include_orgId.checked);
+       if(include_orgId.checked){
+    	   queryStr += encodeURIComponent(" +regrootid:") + encodeURIComponent(document.all.djjgone.value);
+       }else{
+	       //if(document.all.djjgone.value!=""){
+	    		queryStr += encodeURIComponent(" +orgId:") + encodeURIComponent(document.all.djjgone.value);//登记机关  chk1
+	      // }
+       }
+       var include_superid = document.all.chk2;
+       //alert(document.all.gxdw.value);
+       //alert(include_superid.checked);
+       if(include_superid.checked){
+    	   queryStr += encodeURIComponent(" +superrootid:") + encodeURIComponent(document.all.gxdw.value);
+       }else{
+	      // if( document.all.gxdw.value){
+		   	  	queryStr += encodeURIComponent(" +superorgid:") + encodeURIComponent(document.all.gxdw.value);//管辖单位
+		   //}
+       }
+       
       if(document.all.cjrqq.value==""&&document.all.cjrqz.value!=""){
     	  queryStr +=  encodeURIComponent(" +estDate:[* TO ")+encodeURIComponent(document.all.cjrqz.value)+encodeURIComponent("T23:59:59Z]");
       }
@@ -251,9 +269,10 @@
 
         //queryStr = escape(queryStr);
        
-        app_path = "http://localhost:8080/solr/collection1/select?q="+queryStr+"&wt=json&indent=true";
-       // window.location.href =app_path;
-      init_ent_grid(app_path);
+        app_path = "http://localhost:8080/solrDemo/collection1/select?q="+queryStr+"&wt=json&indent=true";
+        //alert(queryStr);
+        //window.location.href =app_path;
+      	init_ent_grid(app_path);
 <%-- 		   //window.location.href = "/topbirt/frameset?__report=EntBaseInfoQuery_h.rptdesign" + queryStr + "=commoninfo&__overwrite=true"; --%>
     
     }
@@ -313,9 +332,9 @@
 	                    	   return r;
 	                    },
 		                columns:[[
-		                    {field:'id',title:'企业ID',width:80},
-		                    {field:'entname',title:'企业名称',width:80},
-		                    {field:'regno',title:'注册号',width:80}
+		                    {field:'id',title:'企业ID'},
+		                    {field:'entname',title:'企业名称'},
+		                    {field:'regno',title:'注册号'}
 		                    ,{field:'lerep',title:'法人代表'}
 		                    ,{field:'oploc',title:'经营场所'}
 		                    ,{field:'archno',title:'档案号'}
@@ -352,16 +371,13 @@
 		
 		function reloadGird( pageNum, pageSize, total) {
 			var start = app_path.indexOf("&start");
-			//alert("start: "+start);
 			var end  = app_path.indexOf("&rows");
-			//alert("end: "+end);
 			if(start==-1&&end==-1){
 				app_path = $("#demoGrid").datagrid("options").url = app_path+"&start="+((pageNum-1)*pageSize)+"&rows=10";
 			}else{
 				app_path = $("#demoGrid").datagrid("options").url = app_path.substr(0,start)+"&start="+((pageNum-1)*pageSize)+"&rows=10";
 				
 			}
-			//alert(app_path);
 			 $("#demoGrid").datagrid('reload');
 		}
 		
@@ -496,10 +512,7 @@
 		function hylb_dl_Select2()
         {
             var zhi_dl=document.getElementById("hmi").value;
-            //alert(zhi_dl);
-            <%--var url2="<%=rootPath%>/pages/query/reg/hylbxl.jsp?hylbdl="+escape(zhi_dl);--%>
-			
-            //alert(url2);
+            
              if(window.XMLHttpRequest)
             {
 				req=new XMLHttpRequest();
@@ -541,7 +554,7 @@
             var xSel=xmlDoc.getElementsByTagName('select');
             var hylb_xl_root=document.getElementById("hmm");
                 hylb_xl_root.options.length=0;
-            //alert(select_root);
+         
             for(var i=0;i<xSel.length;i++)
             {
                 var xValue=xSel[i].childNodes[0].firstChild.nodeValue;
@@ -552,7 +565,7 @@
                 }catch(e){
                 }
 				}
-           // alert(option);
+           
         }
 
     </SCRIPT>
@@ -562,10 +575,7 @@
 	  function hylb_xl_Select3()
         {
             var zhi_xl=document.getElementById("hmm").value;
-            //alert(zhi_xl);
-            <%--var url23="<%=rootPath%>/pages/query/reg/hylbxxl.jsp?hylbdl="+escape(zhi_xl);--%>
-			
-            //alert(url23);
+            
              if(window.XMLHttpRequest)
             {
 				req=new XMLHttpRequest();
@@ -653,16 +663,13 @@
 						<tr>
 							<td colspan="4" class="table-title">请输入查询条件</td>
 						</tr>
-						<%--
-			   //广西省
-			   if(PageComboxOptions.getSheng().equals("GUANGXI")){
-				--%>
+						
 						<tr>
 							<td><b>说明：<b></td>
 							<td colspan="3" class="two-content"><b>
 									需要打印咨询单的用户，请到“企业咨询单打印”菜单进行查询打印！<b></td>
 						</tr>
-						<%--}--%>
+						
 						<tr>
 							<td>企业名称</td>
 							<td class="four-content"><input type="text" name="qymc"
@@ -682,17 +689,11 @@
   document.all('trDJJGone').style.display="none";
   document.all('trDJJGtwo').style.display="block";
   }
-  </script> <%--
-  if(PageComboxOptions.getSheng().equals("GUANGXI")) {
---%> <%--
-}else{	
---%> <input name="rad2" type="radio" id="r21" value="block"
+  </script>  <input name="rad2" type="radio" id="r21" value="block"
 								checked="checked" onClick="show()" style="width: auto" />是 <input
 								name="rad2" type="radio" id="r22" value="none" onClick="sel()"
 								style="width: auto" />否 <input name="rad2" type="radio" id="r23"
-								value="none" onClick="sel()" style="width: auto" />不限制 <%--
-}
---%></td>
+								value="none" onClick="sel()" style="width: auto" />不限制 </td>
 						</tr>
 
 						<tr>
@@ -725,9 +726,7 @@
 								id="qylx_zl" onchange="Change_Select()">
 									<option value="">--不限制--</option>
 									<option value="1100">1100-责任有限公司</option>
-									<%--
-        out.println(PageComboxOptions.getOptionsQYLX());
-				--%>
+									
 							</select></td>
 						</tr>
 						<tr>
@@ -747,9 +746,7 @@
 								onchange="hylb_Select1()" class="long-select" alt="行业门类">
 									<option value="">--不限制--</option>
 									<option value="A">A-农林牧渔</option>
-									<%--
-             out.println(PageComboxOptions.getOptionsHYLB());
-				--%>
+									
 							</select></td>
 							<td>行业大类</td>
 							<td class="four-content"><select name="hmi" id="hmi"
@@ -892,28 +889,10 @@
 							<td>登记机关</td>
 							<td colspan="3" class="two-content"><select name="djjgone"
 								styleClass="long-select">
-								<option value="999">安徽省</option>
+								<option value="999">340000-安徽省3</option>
 
-									<!--  if ("".equals(porgid)) {
-                           out.println(PageComboxOptions.getOptionsJG(orgid));
-                    } else {
-                        out.println(PageComboxOptions.getNoSctWithPorgidOptionsDJJG(orgid));
-                    } -->
+									
 
-							</select></td>
-						</tr>
-						<tr id="trDJJGtwo" style="display: none;">
-							<td>登记机关</td>
-							<td colspan="3" class="two-content"><select name="djjgtwo"
-								styleClass="long-select">
-								<option value="999">安徽省</option>
-									<%--
-                    if ("".equals(porgid)) {
-                           out.println(PageComboxOptions.getOptionsJG(orgid));
-                    } else {
-                        out.println(PageComboxOptions.getNoSctWithPorgidOptionsGXDW(orgid));
-                    }
-                --%>
 							</select></td>
 						</tr>
 
@@ -932,56 +911,14 @@
 
 
 
-						<%--
-  if(PageComboxOptions.getSheng().equals("GUANGXI")) {
---%>
-						<tr id="trGxdw" style="display: none;">
-							<td>管辖单位</td>
-							<td colspan="3" class="two-content"><select name="gxdw"
-								styleClass="long-select">
-								<option value="999">安徽省</option>
-									<%--
-                    if ("".equals(porgid)) {
-                           out.println(PageComboxOptions.getOptionsJG(orgid));
-                    } else {
-                        out.println(PageComboxOptions.getNoSctWithPorgidOptionsGXDW(orgid));
-                    }
-                --%>
-							</select></td>
 
 
-
-						</tr>
-
-
-						<tr id="trGxdwkg" style="display: none;">
-							<td colspan="2" class="two-content"><div align="right">
-									<input type="checkbox" name="chk2" title="是否查询下级机关所管辖的企业"
-										style="width: auto" /> 选中则查询范围包括下级管辖机关
-								</div></td>
-
-							<td></td>
-
-							<td class="two-content"></td>
-
-
-						</tr>
-
-						<%--
-}else{	
---%>
 						<tr id="trGxdw">
 							<td>管辖单位</td>
 							<td colspan="3" class="two-content"><select name="gxdw"
 								styleClass="long-select">
-								<option value="999">安徽省</option>
-									<%--
-                    if ("".equals(porgid)) {
-                           out.println(PageComboxOptions.getOptionsJG(orgid));
-                    } else {
-                        out.println(PageComboxOptions.getNoSctWithPorgidOptionsGXDW(orgid));
-                    }
-                --%>
+								<option value="999">340000-安徽省3</option>
+									
 							</select></td>
 
 
@@ -1001,9 +938,7 @@
 
 
 						</tr>
-						<%--
-}
---%>
+
 
 
 					</table>
@@ -1014,29 +949,7 @@
 						<tr>
 							<td><input type="button" name="viewReportB" value="确定"
 								onclick="viewReport()" /> <%--
-			   //河南省
-			   if(PageComboxOptions.getSheng().equals("HENAN")){  
-				--%> <%--
-				//安徽省
-				}	else if(PageComboxOptions.getSheng().equals("ANHUI")){
-			--%> <!-- 			<input type="button" name="viewReportB"  value="确定"  onclick="viewReport()"/> -->
-
-								<%--
-				//青海省
-				}	else if(PageComboxOptions.getSheng().equals("QINGHEI")){
-			--%> <!-- 			<input type="button" name="viewReportB"  value="确定"  onclick="viewReport_qh()"/> -->
-
-
-								<%--
-				//西藏省
-				}	else if(PageComboxOptions.getSheng().equals("XIZANG")){
-			--%> <!-- 			<input type="button" name="viewReportB"  value="确定"  onclick="viewReport_xz()"/> -->
-
-								<%--
-				//广西省
-				}	else if(PageComboxOptions.getSheng().equals("GUANGXI")){
-			--%> <!-- 			<input type="button" name="viewReportB"  value="确定"  onclick="viewReport_gx()"/> -->
-
+			  
 
 								<%--}--%> <input type="reset" class="cancle" value="重置" /> <input
 								type="button" name="viewReportA" value="说明"
@@ -1045,34 +958,20 @@
 					</table>
 
 
-					<table style="width: 700px; height: 250px">
-						<tr>
-							<td>
-								<div
-									data-options="region:'center',collapsed:false,border:false,height:360">
-									<table id="demoGrid"></table>
-									<table id="dg" title="Client Side Pagination" 
-										style="width: 1000px; height: 300px" 
-																		data-options=" 
- 				rownumbers:true, 
- 				singleSelect:true, 
- 				autoRowHeight:false, 
-				pagination:true, 
- 				pageSize:10"> 
- 										<thead> 
-												<th field="entname" width="80">公司名称</th> 
-												 				<th field="regno" width="100">注册号</th> 
- 											</tr> 
-									</thead> 									</table> 
-								</div>
-							</td>
-						</tr>
-					</table>
+					
 
 				</form> <!--内容页面end-->
 			</td>
 		</tr>
 	</table>
+	<table border="0" align="center" style="width: 1000px; height: 300px" >
+		<tr>
+		<td>
+		<table id="demoGrid"></table>
+		
+	</td>
+	</tr>
+					</table>
 	<!--页面框架end-->
 </body>
 </html>
