@@ -118,28 +118,31 @@
 
 <script type="text/javascript">
 	var app_path= "";
+	var takes;
+	var start;
 	function viewReport(){  
    	   //拼 装转发参数
    	   var queryStr = "";
+   	   var fqStr = "";
    	   if(document.all.qymc.value!=""){
-   	   		queryStr = encodeURIComponent(' +entname:') + encodeURIComponent('"'+document.all.qymc.value+'"');//企业名称
+   	   		queryStr = encodeURIComponent(' +entname:') + encodeURIComponent('*'+document.all.qymc.value+'*');//企业名称
 	   }
 	  
       
-	   if(document.all.zch.value!=""){
-	     	queryStr += encodeURIComponent(" +regno:") + encodeURIComponent('*'+document.all.zch.value);//注册号
+	   if(document.all.zch.value!=""){//oldregno
+	     	queryStr += encodeURIComponent(" +(regno:") + encodeURIComponent('*'+document.all.zch.value) +   encodeURIComponent(" OR oldregno:")+ encodeURIComponent('*'+document.all.zch.value)+")";//注册号
 	   }
 	   if(document.all.fddbr.value!=""){
-	     	queryStr += encodeURIComponent(" +lerep:") + encodeURIComponent('"'+document.all.fddbr.value+'"');//法定代表人
+	     	queryStr += encodeURIComponent(" +lerep:") + encodeURIComponent('*'+document.all.fddbr.value+'*');//法定代表人
 	   }
        if(document.all.jydz.value!=""){
-       		queryStr += encodeURIComponent(" +oploc:") + encodeURIComponent('"'+document.all.jydz.value+'"');//经营场所
+       		queryStr += encodeURIComponent(" +oploc:") + encodeURIComponent('*'+document.all.jydz.value+'*"');//经营场所
        }
        if(document.all.dah.value!=""){
         	queryStr += encodeURIComponent(" +archno:") + encodeURIComponent('*'+document.all.dah.value);//档案号
        }
        if(document.all.jyfw.value!=""){
-       		queryStr += encodeURIComponent(" +opscope:") + encodeURIComponent('"'+document.all.jyfw.value+'"');//经营范围
+       		queryStr += encodeURIComponent(" +opscope:") + encodeURIComponent('*'+document.all.jyfw.value+'*');//经营范围
        }
        if(document.all.qylx_zl.value!=""){
        		queryStr += encodeURIComponent(" +enttype:") + encodeURIComponent(document.all.qylx_zl.value); //企业中类
@@ -170,11 +173,6 @@
        }
        //企业属性
        var qysx =  document.all.qysx;
-       /* var nzkg =  qysx[0].checked?'01':'';
-       var wzkg =  qysx[1].checked?'02':'';
-       var sykg =  qysx[2].checked?'03':'';
-       var gtkg =  qysx[3].checked?'04':'';
-       var nhkg =  qysx[4].checked?'07':'';  */
        
        var is_fist = true;
        for(var i = 0;i<qysx.length;i++){
@@ -203,25 +201,7 @@
      		queryStr += encodeURIComponent(" +regtype:") + encodeURIComponent(document.all.djlx.value);//regtype 登记类型
        } 
        
-       var include_orgId = document.all.chk1;
-       //alert(include_orgId.checked);
-       if(include_orgId.checked){
-    	   queryStr += encodeURIComponent(" +regrootid:") + encodeURIComponent(document.all.djjgone.value);
-       }else{
-	       //if(document.all.djjgone.value!=""){
-	    		queryStr += encodeURIComponent(" +orgId:") + encodeURIComponent(document.all.djjgone.value);//登记机关  chk1
-	      // }
-       }
-       var include_superid = document.all.chk2;
-       //alert(document.all.gxdw.value);
-       //alert(include_superid.checked);
-       if(include_superid.checked){
-    	   queryStr += encodeURIComponent(" +superrootid:") + encodeURIComponent(document.all.gxdw.value);
-       }else{
-	      // if( document.all.gxdw.value){
-		   	  	queryStr += encodeURIComponent(" +superorgid:") + encodeURIComponent(document.all.gxdw.value);//管辖单位
-		   //}
-       }
+       
        
       if(document.all.cjrqq.value==""&&document.all.cjrqz.value!=""){
     	  queryStr +=  encodeURIComponent(" +estDate:[* TO ")+encodeURIComponent(document.all.cjrqz.value)+encodeURIComponent("T23:59:59Z]");
@@ -244,34 +224,29 @@
     	  queryStr +=  encodeURIComponent(" +apprdate:[")+encodeURIComponent(document.all.hzrqq.value)+encodeURIComponent("T00:00:00Z TO ")+
     	  encodeURIComponent(document.all.hzrqz.value)+encodeURIComponent("T23:59:59Z]");
       }
-       
-     //queryStr += " +estDate:[1995-12-31T23:59:59Z   TO   *]";   
-       // if(document.all.cjrqq.value!=""&&document.all.cjrqz.value==""){
-        	
-        //}
-        
-        //queryStr += " AND opto=" + document.all.cjrqq.value;//成立日期起
-       // queryStr += " AND opfrom:" + document.all.cjrqz.value;//成立日期止
-        //queryStr += " AND apprdate:" + document.all.hzrqq.value;//核准日期起
-       // queryStr += " AND apprdate:" + document.all.hzrqz.value;//核准日期止
-       
-       
-       
-       
-       
-        //queryStr += " AND state:" + document.all.zt.value;//企业状态
-        //queryStr += " AND venind:" + document.all.fxhy.value;//风险行业
-        //queryStr += " AND optype:" + document.all.jylb.value;//经营类别
-        //queryStr += " AND opto:" + document.all.cjrqq.value;//成立日期起
-        //queryStr += " AND opfrom:" + document.all.cjrqz.value;//成立日期止
-        //queryStr += " AND apprdate:" + document.all.hzrqq.value;//核准日期起
-        //queryStr += " AND apprdate:" + document.all.hzrqz.value;//核准日期止
+      
+      
+      
+      
+      var include_orgId = document.all.chk1;
+      var include_superid = document.all.chk2;
+      if(include_orgId.checked){
+   		fqStr +="&fq="+ encodeURIComponent("{!join from=marpripinfo_zid to=orgId fromIndex=collection2}rootid:")+encodeURIComponent(document.all.djjgone.value);
+      }else{
+	    		queryStr += encodeURIComponent(" +orgId:") + encodeURIComponent(document.all.djjgone.value);//登记机关  chk1
+      }
+      if(include_superid.checked){
+  		fqStr += "&fq="+encodeURIComponent("{!join from=marpripinfo_zid to=superorgid fromIndex=collection2}rootid:")+encodeURIComponent(document.all.djjgone.value);
 
-        //queryStr = escape(queryStr);
-       
-        app_path = "http://localhost:8080/solrDemo/collection1/select?q="+queryStr+"&wt=json&indent=true";
-        //alert(queryStr);
-        //window.location.href =app_path;
+      }else{
+		   	  	queryStr += encodeURIComponent(" +superorgid:") + encodeURIComponent(document.all.gxdw.value);//管辖单位
+      }
+       if(fqStr == ""){
+        	app_path = "http://localhost:8080/solr/collection1/select?q="+queryStr+"&wt=json&indent=true&start=0&rows=20&sort=rownoi+desc";
+    	   
+       }else{
+    	   app_path = "http://localhost:8080/solr/collection1/select?q="+queryStr+fqStr+"&wt=json&indent=true&start=0&rows=20&sort=rownoi+desc";
+       }
       	init_ent_grid(app_path);
 <%-- 		   //window.location.href = "/topbirt/frameset?__report=EntBaseInfoQuery_h.rptdesign" + queryStr + "=commoninfo&__overwrite=true"; --%>
     
@@ -331,27 +306,39 @@
 	               				};
 	                    	   return r;
 	                    },
+	                    onLoadSuccess:function(data){
+	                    	takes = new Date().getTime()-start;
+	                    	$("#demoGrid").datagrid("getPanel").panel("setTitle","查询结果展示          耗时  "+takes+" 毫秒");
+	                    	
+	                    },
+	                    onBeforeLoad:function(param){
+	                    	start = new Date().getTime();
+	                    },
 		                columns:[[
-		                    {field:'id',title:'企业ID'},
-		                    {field:'entname',title:'企业名称'},
-		                    {field:'regno',title:'注册号'}
-		                    ,{field:'lerep',title:'法人代表'}
-		                    ,{field:'oploc',title:'经营场所'}
-		                    ,{field:'archno',title:'档案号'}
-		                    ,{field:'enttype',title:'企业类型'}
-		                    ,{field:'industryphy',title:'行业门类'}
-		                    ,{field:'industrycoda',title:'行业大类'}
-		                    ,{field:'industrycoxi',title:'行业小类'}
-		                    ,{field:'estDate',title:'成立日期'}
-		                    ,{field:'apprdate',title:'核准日期'}
-		                    //,{field:'lerep',title:'法人代表'}
+		                    {field:'entname',title:'企业名称',formatter:entname_link},
+		                    {field:'regno',title:'注册号',formatter:regno_link},
+		                    {field:'tel',title:'联系电话'},
+		                    {field:'enttypename',title:'企业类型名称'},
+		                    {field:'industryphyname',title:'行业门类名称'},
+		                    {field:'industrycoxiname',title:'行业细类名称'},
+		                    {field:'lerep',title:'法人代表人'},
+		                    {field:'oploc',title:'经营地址'},
+		                    {field:'opscope',title:'经营范围'},
+		                    {field:'estDate',title:'创建日期',formatter:_format},
+		                    {field:'apprdate',title:'核准日期',formatter:_format},
+		                    {field:'opFrom',title:'经营日期起',formatter:_format},
+		                    {field:'opTo',title:'经营日期止',formatter:_format},
+		                    {field:'statename',title:'企业状态'},
+		                    {field:'optypename',title:'经营类别'},
+		                    {field:'superorgname',title:'管辖单位名称'},
+		                    {field:'orgname',title:'登记机关'}
 		                    
 		                ]]
 		               
 		            });
 		    var pager =  $("#demoGrid").datagrid('getPager');
 		    pager.pagination({
-		    			pageSize:10,
+		    			pageSize:20,
 				    	showPageList:false,
 						showRefresh:false,
 						onSelectPage:function(number, size) {
@@ -367,15 +354,77 @@
 		    
 		    
 		    
-		} 
+		}
+		function entname_link(value,row,index){
+			var url = "http://192.168.3.40:9081/IcisReport/pages/query/user/";
+			if(row.enttypepro =='01')
+				url += 'NeiEntInfo_main.jsp?';
+			else if(row.enttypepro =='02')
+				url += 'ForEntInfo_main.jsp?';
+			else if(row.enttypepro =='03')
+				url += 'PriEntInfo_main.jsp?';
+			else if(row.enttypepro =='04')
+				url += 'IndEntInfo_main.jsp?';
+			else if(row.enttypepro =='07')
+				url += 'IndEntInfo_main.jsp?';
+			url +="ztbs="+row["id"] + "&orgid=999"+"&userid=999";
+			url = encodeURI(url);
+			return '<a href='+'"'+url+'"'+'>'+value+'</a>';
+
+		}
+		
+		function regno_link(value,row,index){
+			var url;
+			
+			if(row.enttype==1100 || row.enttype==1200)
+				url = "http://192.168.3.40:9081/IcisReport/pages/query/reg/topbase_nz.jsp?ztbs="+row.id+"&qymcxx="+encodeURIComponent(encodeURIComponent(row.entname))+"&zchxx="+row.regno+"&jslx="+row.jslx+"&userid=999"+"&orgid=999"+"&url=http://192.168.3.29:9081/TopIcis";
+			if(row.enttype==2100 || row.enttype==2200)
+				url = "http://192.168.3.40:9081/IcisReport/pages/query/reg/topbase_fgs.jsp?ztbs="+row.id+"&qymcxx="+encodeURIComponent(encodeURIComponent(row.entname))+"&zchxx="+row.regno+"&jslx="+row.jslx+"&userid=999"+"&orgid=999"+"&url=http://192.168.3.29:9081/TopIcis";
+			if(row.enttype==3100 || row.enttype==3200 || row.enttype==3300 || row.enttype==3400 || row.enttype==3500)
+				url = "http://192.168.3.40:9081/IcisReport/pages/query/reg/topbase_qyfr.jsp?ztbs="+row.id+"&qymcxx="+encodeURIComponent(encodeURIComponent(row.entname))+"&zchxx="+row.regno+"&jslx="+row.jslx+"&userid=999"+"&orgid=999"+"&url=http://192.168.3.29:9081/TopIcis";
+			if(row.enttype==4100 ||row.enttype==4200 || row.enttype==4300 || row.enttype==4400 || row.enttype==4600 || row.enttype==4700)
+				url = "http://192.168.3.40:9081/IcisReport/pages/query/reg/topbase_yydw.jsp?ztbs="+row.id+"&qymcxx="+encodeURIComponent(encodeURIComponent(row.entname))+"&zchxx="+row.regno+"&jslx="+row.jslx+"&userid=999"+"&orgid=999"+"&url=http://192.168.3.29:9081/TopIcis";
+			if(row.enttype==4500 && row.enttypeitem==4530)
+				url = "http://192.168.3.40:9081/IcisReport/pages/query/reg/topbase_hhqy.jsp?ztbs="+row.id+"&qymcxx="+encodeURIComponent(encodeURIComponent(row.entname))+"&zchxx="+row.regno+"&jslx="+row.jslx+"&userid=999"+"&orgid=999"+"&url=http://192.168.3.29:9081/TopIcis";
+			if(row.enttype==4500 && row.enttypeitem==4550)
+				url = "http://192.168.3.40:9081/IcisReport/pages/query/reg/topbase_hhqyfzjg.jsp?ztbs="+row.id+"&qymcxx="+encodeURIComponent(encodeURIComponent(row.entname))+"&zchxx="+row.regno+"&jslx="+row.jslx+"&userid=999"+"&orgid=999"+"&url=http://192.168.3.29:9081/TopIcis";
+			if(row.enttype==4500 && row.enttypeitem==4540)
+				url = "http://192.168.3.40:9081/IcisReport/pages/query/reg/topbase_dzqy.jsp?ztbs="+row.id+"&qymcxx="+encodeURIComponent(encodeURIComponent(row.entname))+"&zchxx="+row.regno+"&jslx="+row.jslx+"&userid=999"+"&orgid=999"+"&url=http://192.168.3.29:9081/TopIcis";
+			if(row.enttype==4500 && row.enttypeitem==4560)
+				url = "http://192.168.3.40:9081/IcisReport/pages/query/reg/topbase_dzqyfzjg.jsp?ztbs="+row.id+"&qymcxx="+encodeURIComponent(encodeURIComponent(row.entname))+"&zchxx="+row.regno+"&jslx="+row.jslx+"&userid=999"+"&orgid=999"+"&url=http://192.168.3.29:9081/TopIcis";
+			if(row.enttype==5100 ||row.enttype==5200||row.enttype==5300|| row.enttype==6100||row.enttype==6200||row.enttype==6300)
+				url = "http://192.168.3.40:9081/IcisReport/pages/query/reg/topbase_wz.jsp?ztbs="+row["BS"]+"&qymcxx="+encodeURIComponent(encodeURIComponent(row.entname))+"&zchxx="+row.regno+"&jslx="+row.jslx+"&userid=999"+"&orgid=999"+"&url=http://192.168.3.29:9081/TopIcis";
+			if(row.enttype==5800 || row.enttype==6800 || row.enttype==7100)
+				url = "http://192.168.3.40:9081/IcisReport/pages/query/reg/topbase_wzfz.jsp?ztbs="+row.id+"&qymcxx="+encodeURIComponent(encodeURIComponent(row.entname))+"&zchxx="+row.regno+"&jslx="+row.jslx+"&userid=999"+"&orgid=999"+"&url=http://192.168.3.29:9081/TopIcis";
+			if(row.enttype==7200)
+				url = "http://192.168.3.40:9081/IcisReport/pages/query/reg/topbase_wqdbjg.jsp?ztbs="+row.id+"&qymcxx="+encodeURIComponent(encodeURIComponent(row.entname))+"&zchxx="+row.regno+"&jslx="+row.jslx+"&qylx="+row.enttype+"&orgid=999"
+			if(row.enttype==7300)
+				url = "http://192.168.3.40:9081/IcisReport/pages/query/reg/topbase_wqjyhd.jsp?ztbs="+row.id+"&qymcxx="+encodeURIComponent(encodeURIComponent(row.entname))+"&zchxx="+row.regno+"&jslx="+row.jslx+"&userid=999"+"&orgid=999"+"&url=http://192.168.3.29:9081/TopIcis";
+			if(row.enttype==5400 || row.enttype==6400)
+				url = "http://192.168.3.40:9081/IcisReport/pages/query/reg/topbase_wstzhh.jsp?ztbs="+row.id+"&qymcxx="+encodeURIComponent(encodeURIComponent(row.entname))+"&zchxx="+row.regno+"&jslx="+row.jslx+"&userid=999"+"&orgid=999"+"&url=http://192.168.3.29:9081/TopIcis";
+			if(row.enttype==8100 ||row.enttype==8200)
+				url = "http://192.168.3.40:9081/IcisReport/pages/query/reg/topbase_qyjt.jsp?ztbs="+row.id+"&qymcxx="+encodeURIComponent(encodeURIComponent(row.entname))+"&zchxx="+row.regno+"&jslx="+row.jslx+"&userid=999"+"&orgid=999"+"&url=http://192.168.3.29:9081/TopIcis";
+			if(row.enttype==9100)
+				url = "http://192.168.3.40:9081/IcisReport/pages/query/reg/topbase_nh.jsp?ztbs="+row.id+"&qymcxx="+encodeURIComponent(encodeURIComponent(row.entname))+"&zchxx="+row.regno+"&jslx="+row.jslx+"&userid=999"+"&orgid=999"+"&url=http://192.168.3.29:9081/TopIcis";
+			if(row.enttype==9200)
+				url = "http://192.168.3.40:9081/IcisReport/pages/query/reg/topbase_nhfz.jsp?ztbs="+row.id+"&qymcxx="+encodeURIComponent(encodeURIComponent(row.entname))+"&zchxx="+row.regno+"&jslx="+row.jslx+"&userid=999"+"&orgid=999"+"&url=http://192.168.3.29:9081/TopIcis";
+			if(row.enttype==9600)
+				url = "http://192.168.3.40:9081/IcisReport/pages/query/reg/topbase_gt.jsp?ztbs="+row.id+"&qymcxx="+encodeURIComponent(encodeURIComponent(row.entname))+"&zchxx="+row.regno+"&jslx="+row.jslx+"&userid=999"+"&orgid=999"+"&url=http://192.168.3.29:9081/TopIcis";
+			return '<a href='+'"'+url+'"'+'>'+value+'</a>';;
+		}
+		function _format(value,row,index){
+			if(value == null)
+				return;
+			return value.substr(0,10);
+		}
 		
 		function reloadGird( pageNum, pageSize, total) {
 			var start = app_path.indexOf("&start");
 			var end  = app_path.indexOf("&rows");
 			if(start==-1&&end==-1){
-				app_path = $("#demoGrid").datagrid("options").url = app_path+"&start="+((pageNum-1)*pageSize)+"&rows=10";
+				app_path = $("#demoGrid").datagrid("options").url = app_path+"&start="+((pageNum-1)*pageSize)+"&rows=20";
 			}else{
-				app_path = $("#demoGrid").datagrid("options").url = app_path.substr(0,start)+"&start="+((pageNum-1)*pageSize)+"&rows=10";
+				app_path = $("#demoGrid").datagrid("options").url = app_path.substr(0,start)+"&start="+((pageNum-1)*pageSize)+"&rows=20";
 				
 			}
 			 $("#demoGrid").datagrid('reload');
@@ -725,7 +774,8 @@
 							<td colspan="3" class="two-content"><select name="qylx_zl"
 								id="qylx_zl" onchange="Change_Select()">
 									<option value="">--不限制--</option>
-									<option value="1100">1100-责任有限公司</option>
+									<option value="1100">1100-有限责任公司</option>
+									<option value="1200">1200-股份有限公司</option>
 									
 							</select></td>
 						</tr>
@@ -734,7 +784,8 @@
 							<td colspan="3" class="two-content"><select name="qylx_xl"
 								id="qylx_xl">
 									<option value="">--不限制--</option>
-									<option value="1110">1100-责任有限公司(国有独资)</option>
+									<option value="1110">1100-有限责任公司(国有独资)</option>
+									<option value="1110">1210-股份有限公司(上市)</option>
 							</select></td>
 
 						</tr>
@@ -746,6 +797,7 @@
 								onchange="hylb_Select1()" class="long-select" alt="行业门类">
 									<option value="">--不限制--</option>
 									<option value="A">A-农林牧渔</option>
+									<option value="B">B-采矿业</option>
 									
 							</select></td>
 							<td>行业大类</td>
@@ -753,6 +805,7 @@
 								onchange="hylb_dl_Select2()" class="long-select" alt="行业大类">
 									<option value="">--不限制--</option>
 									<option value="01">01-农业</option>
+									<option value="06">06-煤炭开采和洗选业</option>
 							</select></td>
 						</tr>
 
@@ -762,13 +815,14 @@
 								onchange="hylb_xl_Select3()" class="long-select" alt="行业细类">
 									<option value="">--不限制--</option>
 									<option value="011">011-谷物种植</option>
+									<option value="061">061-烟煤和无烟煤开采洗选</option>
 							</select></td>
 							<td>行业小类</td>
 							<td class="four-content"><select name="hyxxl" id="hyxxl"
 								class="long-select" alt="行业小类">
 									<option value="">--不限制--</option>
-									<option value="0111">01-稻谷种植</option>
-
+									<option value="0111">0111-稻谷种植</option>
+									<option value="0610">0610-烟煤和无烟煤开采洗选</option>
 
 
 							</select></td>
@@ -825,6 +879,12 @@
 							<td class="four-content"><select name="jylb"
 								styleClass="long-select">
 									<option value="" tourl="<%--=jylb--%>">不限制</option>
+									<option value="0110" tourl="<%--=jylb--%>">0110-种植养殖类</option>
+									<option value="0120" tourl="<%--=jylb--%>">0120-食品生产类</option>
+									<option value="0130" tourl="<%--=jylb--%>">0130-食品经营类</option>
+									<option value="0140" tourl="<%--=jylb--%>">0140-餐饮类</option>
+									<option value="0190" tourl="<%--=jylb--%>">0190-其他食品经营类主体</option>
+									<option value="9900" tourl="<%--=jylb--%>">9900-其他</option>
 
 
 									<!--                         out.println(PageComboxOptions.getJylb()); -->
@@ -964,7 +1024,7 @@
 			</td>
 		</tr>
 	</table>
-	<table border="0" align="center" style="width: 1000px; height: 300px" >
+	<table border="1" align="center" style="width: 1000px; height: 620px" >
 		<tr>
 		<td>
 		<table id="demoGrid"></table>

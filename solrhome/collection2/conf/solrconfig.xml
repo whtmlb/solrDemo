@@ -101,7 +101,7 @@
        replication is in use, this should match the replication
        configuration.
     -->
-  <dataDir>${solr.collection1.data.dir:}</dataDir>
+  <dataDir>${solr.collection2.data.dir:}</dataDir>
 
 
   <!-- The DirectoryFactory to use for indexes.
@@ -341,7 +341,7 @@
          "dir" - the target directory for transaction logs, defaults to the
                 solr data directory.  --> 
     <updateLog>
-      <str name="dir">${solr.collection1.ulog.dir:}</str>
+      <str name="dir">${solr.collection2.ulog.dir:}</str>
     </updateLog>
  
     <!-- AutoCommit

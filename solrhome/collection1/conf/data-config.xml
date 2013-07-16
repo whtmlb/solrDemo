@@ -4,36 +4,92 @@
 			  driver="com.ibm.db2.jcc.DB2Driver"
               url="jdbc:db2://192.168.3.238:50000/ctand" 
               user="topicis" 
-			  batchSize="200"
+			  batchsize="2000"
               password="topicissjz" />
   <document>
     <entity name="MARPRIPINFO" 
-            query="select ID,entname,SUPERORGID,REGNO,lerep,oploc,opscope,enttype,enttypeitem,industryphy,
-			substr(industryco,1,2) as industrycoda,
-			(case length(industryco)				
-				when 3 then industryco
-				when 4 then substr(industryco,1,3) 
-			end) as industrycoxi,
-			(case length(industryco)
-				when 4 then industryco 
-			end) as industrycoxiao,
-			venind,optype,enttypepro,state,regtype,estDate,apprdate,ORGID from REG_MARPRIPINFO where regtype!='02'">
+            query="select ROW_NUMBER() OVER() as ROWNO,
+		            m.ID,
+		            m.entname,
+		            m.SUPERORGID,
+		            (select o.name from a_organ o where o.id=m.SUPERORGID) as superorgname,
+		            m.REGNO,
+		            m.oldregno,
+		            m.lerep,
+		            m.tel,
+		            m.DOM,
+		            m.opscope,
+		            m.enttype,
+		            (select ec.name
+					from CODE_EntTypeCode ec
+					where m.enttype = ec.code) as enttypename,
+		            m.enttypeitem,
+		            m.industryphy,
+		            (select ic.name from CODE_IndCode ic where ic.code=m.industryphy) as industryphyname,
+					substr(m.industryco,1,2) as industrycoda,
+					(select e.ARCHNO from REG_ENTRECORDNO e where e.MARPRID=m.ID and e.REGNO=m.REGNO) as ARCHNO,
+					(case length(m.industryco)				
+						when 3 then m.industryco
+						when 4 then substr(m.industryco,1,3) 
+					end) as industrycoxi,
+					(select icc.name from CODE_IndCode icc where icc.code=m.industryco) as industrycoxiname,
+					(case length(m.industryco)
+						when 4 then m.industryco 
+					end) as industrycoxiao,
+					(select cc.credLevel from CRE_CreInfo cc where cc.MarPrID=m.ID fetch first 1 rows only ) as credLevel,
+					m.venind,
+					m.optype,
+					(select bc.name from CODE_BusTypeCode bc where bc.code=m.optype) as optypename,
+					m.enttypepro,
+					m.state,
+					(case m.state
+			         when '01' then
+			          '受理'
+			         when '02' then
+			          '录入'
+			         when '03' then
+			          '待核准'
+			         when '04' then
+			          '已核准'
+			         when '05' then
+			          '已驳回'
+			         when '06' then
+			          '正常'
+			         when '07' then
+			          '注销'
+			         when '08' then
+			          '撤销'
+			         when '09' then
+			          '迁出'
+			         when '10' then
+			          '审核驳回通知书已打印'
+			         when '11' then
+			          '吊销'
+			          when '13' then
+			          '系统内迁入中...(瞬间状态)'
+			         when '15' then
+			          '企业改制更新中...(瞬间状态)'
+			         when '16' then
+			          '企业改制审批通过，原历史数据'
+			          when '20' then
+			          '无效数据(数据已经迁出)'
+			        end) as statename,
+					m.regtype,
+					m.estDate,
+					m.apprdate,
+					m.opFrom,
+					m.opTo,
+					(select min(date(j.WarFrom)) from SYS_CauInfo j where j.MarPrID = m.ID) as jslx,
+					m.ORGID,
+					(select o.name from a_organ o where o.id=m.ORGID) as orgname 					
+					from REG_MARPRIPINFO m where regtype !='02' order by REGNO">
 			<field column="ID" name="id"/>
 			<field column="REGNO" name="regno"/>
+			<field column="ARCHNO" name="archno" />
+			<field column="DOM" name="oploc" />
+			<field column="ROWNO" name="rownoi"/>
 			<field column="SUPERORGID" name="superorgid"/>
-			<field column="orgId" name="ORGID"/>
-		 <entity name="entrecordno" query="select ARCHNO from REG_ENTRECORDNO where MARPRID='${MARPRIPINFO.ID}' and REGNO='${MARPRIPINFO.REGNO}'">
-                <field name="archno" column="ARCHNO" />
-         </entity>
-		 <entity name="creinfo" query="select CredLevel from CRE_CreInfo where MarPrID='${MARPRIPINFO.ID}'">
-                <field name="credLevel" column="CredLevel" />
-         </entity>
-		 <entity name="v_organ_reg" query="select ROOTID from V_ORGAN  where ('${MARPRIPINFO.ORGID}' is not null and '${MARPRIPINFO.ORGID}' != '') and ZID='${MARPRIPINFO.ORGID}'">
-                <field name="regrootid" column="ROOTID" />
-         </entity>
-		 <entity name="v_organ" query="select ROOTID from V_ORGAN  where ('${MARPRIPINFO.SUPERORGID}' is not null and '${MARPRIPINFO.SUPERORGID}' != '') and ZID='${MARPRIPINFO.SUPERORGID}'">
-                <field name="superrootid" column="ROOTID" />
-         </entity>
+			<field column="ORGID" name="orgId"/>		 
     </entity>
   </document>
 </dataConfig>

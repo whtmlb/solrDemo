@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dataConfig>
+  <dataSource type="JdbcDataSource"               
+			  driver="com.ibm.db2.jcc.DB2Driver"
+              url="jdbc:db2://192.168.3.238:50000/ctand" 
+              user="topicis" 
+			  batchSize="200"
+              password="topicissjz" />
+  <document>
+		 <entity name="v_organ" query="select ROW_NUMBER() OVER() as ID,ROOTID,ZID from V_ORGAN">
+                <field name="rootid" column="ROOTID" />
+				<field name="marpripinfo_zid" column="ZID"/>
+         </entity>
+  </document>
+</dataConfig>

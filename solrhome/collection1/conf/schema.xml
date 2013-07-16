@@ -110,52 +110,74 @@
    <!--我自定义添加的-->
    <!--企业名称-->
    <field name="entname" type="text_general" indexed="true" stored="true"/>
+   <!--行号 排序  -->
+   <field name="rownoi" type="int" indexed="true" stored="false"/>
     <!--管辖单位-->
-   <field name="superorgid" type="string" indexed="true" stored="true"/>
+   <field name="superorgid" type="string" indexed="true" stored="false"/>
+   <!--管辖单位名称   展示-->
+   <field name="superorgname" type="string" indexed="false" stored="true"/>
    <!--注册号-->
    <field name="regno" type="text_general_num" indexed="true" stored="true"/>
-    <!--法定代表人-->
+   <!--老注册号  新老注册号是或运算以后和其他字段and -->
+   <field name="oldregno" type="text_general_num" indexed="true" stored="false"/>
+    <!--法定代表人 -->
    <field name="lerep" type="text_general" indexed="true" stored="true"/>
-   <!--经营场所 修改-->
+   <!--经营场所 修改 -->
    <field name="oploc" type="text_general" indexed="true" stored="true"/>
+   <!--联系电话-->
+   <field name="tel" type="string" indexed="false" stored="true"/>
    <!--档案号-->
-   <field name="archno" type="text_general_num" indexed="true" stored="true"/>
-   <!--经营范围-->
+   <field name="archno" type="text_general_num" indexed="true" stored="true"/>   
+   <field name="jslx" type="string" indexed="true" stored="true"/>   
+   <!--经营范围 展示-->
    <field name="opscope" type="text_general" indexed="true" stored="true"/>
    <!--企业类型-中类-->
    <field name="enttype" type="string" indexed="true" stored="true"/>
+   <!--企业类型名称-中类-->
+   <field name="enttypename" type="string" indexed="false" stored="true"/>
    <!--企业类型-小类-->
-   <field name="enttypeitem" type="string" indexed="true" stored="true"/>
+   <field name="enttypeitem" type="string" indexed="true" stored="false"/>
    <!--行业门类-->
-   <field name="industryphy" type="string" indexed="true" stored="true"/>
+   <field name="industryphy" type="string" indexed="true" stored="false"/>
+   <!--行业门类名称-->
+   <field name="industryphyname" type="string" indexed="false" stored="true"/>
    <!--行业大类 -->
-   <field name="industrycoda" type="string" indexed="true" stored="true"/>
+   <field name="industrycoda" type="string" indexed="true" stored="false"/>
    <!--行业细类-->
-   <field name="industrycoxi" type="string" indexed="true" stored="true"/>
+   <field name="industrycoxi" type="string" indexed="true" stored="false"/>
+   <!--行业细类名称-->
+   <field name="industrycoxiname" type="string" indexed="false" stored="true"/>
    <!--行业小类 -->
-   <field name="industrycoxiao" type="string" indexed="true" stored="true"/>
+   <field name="industrycoxiao" type="string" indexed="true" stored="false"/>
    <!--风险行业-->
-   <field name="venind" type="string" indexed="true" stored="true"/>
+   <field name="venind" type="string" indexed="true" stored="false"/>
    <!--信用级别 -->
-   <field name="credLevel" type="string" indexed="true" stored="true"/>
+   <field name="credLevel" type="string" indexed="true" stored="false"/>
    <!--经营类别-->
-   <field name="optype" type="string" indexed="true" stored="true"/>
+   <field name="optype" type="string" indexed="true" stored="false"/>
+   <!--经营类别名称-->
+   <field name="optypename" type="string" indexed="false" stored="true"/>
    <!--企业属性-->
    <field name="enttypepro" type="string" indexed="true" stored="true"/>
    <!--企业状态-->
-   <field name="state" type="string" indexed="true" stored="true"/>
+   <field name="state" type="string" indexed="true" stored="false"/>
+   <!--企业状态名称  展示-->
+   <field name="statename" type="string" indexed="false" stored="true"/>
    <!--登记类型-->
-   <field name="regtype" type="string" indexed="true" stored="true"/>
+   <field name="regtype" type="string" indexed="true" stored="false"/>
    <!--成立日期-->
    <field name="estDate" type="date" indexed="true" stored="true"/>
    <!--核准日期-->
    <field name="apprdate" type="date" indexed="true" stored="true"/>
-   <!--管辖单位上级单位标识-->
-   <field name="superrootid" type="string" indexed="true" stored="true" multiValued="true" />
+   <!--经营期限起 -->
+   <field name="opFrom" type="date" indexed="false" stored="true"/>
+   <!--经营期限止-->
+   <field name="opTo" type="date" indexed="false" stored="true"/>
    <!--登记机关-->
-   <field name="orgId" type="string" indexed="true" stored="true" />
-   <!--登记机关的上级登记机关-->
-   <field name="regrootid" type="string" indexed="true" stored="true" multiValued="true" />   
+   <field name="orgId" type="string" indexed="true" stored="false" />
+   <!--登记机关名称   展示-->
+   <field name="orgname" type="string" indexed="false" stored="true" />
+     
    <!-- Common metadata fields, named specifically to match up with
      SolrCell metadata when parsing rich documents such as Word, PDF.
      Some fields are multiValued only because Tika currently may return
