@@ -81,7 +81,16 @@
 					m.opTo,
 					(select min(date(j.WarFrom)) from SYS_CauInfo j where j.MarPrID = m.ID) as jslx,
 					m.ORGID,
-					(select o.name from a_organ o where o.id=m.ORGID) as orgname 					
+					(select o.name from a_organ o where o.id=m.ORGID) as orgname, 
+					m.ConGro,
+					m.RegCap,
+					m.RecCap,
+					m.ForRegCap,
+					m.ForRecCap,
+					(select coalesce(me.ConGroUSD,0) from REG_MarPriPInfo_Ext me where m.ID=me.MARPRID) as meConGroUSD,
+					(coalesce(m.RegCap, 0) + coalesce(m.ForRegCap, 0)) as zzczb,
+					(select (coalesce(me.DomeRegCapUSD,0)+coalesce(me.ForRegCapUSD,0)) as zczbzmy from REG_MarPriPInfo_Ext me where m.ID=me.MARPRID) as zczbzmy,
+					(select (coalesce(me.DomeRecCapUSD,0)+coalesce(me.ForRecCapUSD,0)) as sszbzwmy from REG_MarPriPInfo_Ext me where m.ID=me.MARPRID) as sszbzwmy
 					from REG_MARPRIPINFO m where regtype !='02' order by REGNO">
 			<field column="ID" name="id"/>
 			<field column="REGNO" name="regno"/>

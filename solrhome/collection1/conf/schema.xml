@@ -121,7 +121,7 @@
    <!--老注册号  新老注册号是或运算以后和其他字段and -->
    <field name="oldregno" type="text_general_num" indexed="true" stored="false"/>
     <!--法定代表人 -->
-   <field name="lerep" type="text_general" indexed="true" stored="true"/>
+   <field name="lerep" type="string" indexed="true" stored="true"/>
    <!--经营场所 修改 -->
    <field name="oploc" type="text_general" indexed="true" stored="true"/>
    <!--联系电话-->
@@ -177,6 +177,24 @@
    <field name="orgId" type="string" indexed="true" stored="false" />
    <!--登记机关名称   展示-->
    <field name="orgname" type="string" indexed="false" stored="true" />
+    <!--投资总额-->
+   <field name="ConGro" type="float" indexed="false" stored="true" />
+   <!--投资总额折美元-->
+   <field name="meConGroUSD" type="float" indexed="false" stored="true" />
+   <!--中方认缴资本-->
+   <field name="RegCap" type="float" indexed="false" stored="true" />
+   <!--中方实缴资本-->
+   <field name="RecCap" type="float" indexed="false" stored="true" />
+   <!--外方认缴资本-->
+   <field name="ForRegCap" type="float" indexed="false" stored="true" />
+   <!--外方实缴资本-->
+   <field name="ForRecCap" type="float" indexed="false" stored="true" />
+   <!--实收资本折万美元-->
+   <field name="sszbzwmy" type="float" indexed="false" stored="true" />
+   <!--总注册资本-->
+   <field name="zzczb" type="float" indexed="false" stored="true" />
+   <!--注册资本折美元-->
+   <field name="zczbzmy" type="float" indexed="false" stored="true" />
      
    <!-- Common metadata fields, named specifically to match up with
      SolrCell metadata when parsing rich documents such as Word, PDF.
