@@ -1,96 +1,4 @@
 <%@ page pageEncoding="UTF-8"%>
-
-
-<%--
-<%@ include file="../check.jsp"%>
---%>
-<%--
-  File Name:    EntBaseInfoQuery.jsp
-  Created by:   IntelliJ IDEA.
-  Copyright:    Copyright (c) 2003-2006
-  Company:      TopSoft( http://www.topnet.net.cn)
-  Author:       leizhimin
-  Modifier:     leizhimin
-  Date:         2006-11-13 21:30:35
-  Readme:       企业信息综合查询(经济户口查询)
---%>
-
-
-<%--@ page contentType="text/html;charset=GBK" --%>
-<%--
- 
-
-    String qymc = request.getParameter("qymc");
-    String zch = request.getParameter("zch");
-    String fddbr = request.getParameter("fddbr");
-    String jydz = request.getParameter("jydz");
-    String jyfw = request.getParameter("jyfw");
-    String djjgone = request.getParameter("djjg");
-    String djjgtwo = request.getParameter("djjg");
-    String gxdw = request.getParameter("gxdw");
-    String gxdwkg = request.getParameter("gxdwkg");
-    String djjgkg = request.getParameter("djjgkg");
-    String hylb = request.getParameter("hylb");
-    String qylx_zl = request.getParameter("qylx_zl");
-    String qylx_xl = request.getParameter("qylx_xl");
-    String qysx = request.getParameter("qysx");
-    String zt = request.getParameter("zt");
-	String jylb = request.getParameter("jylb");
-    String cjrqq = request.getParameter("cjrqq");
-    String cjrqz = request.getParameter("cjrqz");
-    String hzrqq = request.getParameter("hzrqq");
-    String hzrqz = request.getParameter("hzrqz");
-    String djlx = request.getParameter("djlx");
-    String dah = request.getParameter("dah");
-
-    
-
-    if (qymc == null) qymc = "";
-    if (zch == null) zch = "";
-    if (fddbr == null) fddbr = "";
-    if (jydz == null) jydz = "";
-    if (jyfw == null) jyfw = "";
-    if (gxdw == null) gxdw = "";
-    if (djjgone == null) djjgone = "";
-    if (djjgtwo == null) djjgtwo = "";
-    if (gxdwkg == null) gxdwkg = "1";
-    if (djjgkg == null) gxdwkg = "1";
-    if (hylb == null) hylb = "";
-    if (qylx_zl == null) qylx_zl = "";
-    if (qylx_xl == null) qylx_xl = "";
-    if (qysx == null) qysx = "";
-    if (zt == null) zt = "06";
-    if (jylb == null) jylb = "";
-    if (dah == null) dah = "";
-
-    if (jylb == null) jylb = "";
-    if (cjrqq == null) cjrqq = "1980-01-01";
-    if (hzrqq == null) hzrqq = "1980-01-01";
-
-    Calendar calendar = Calendar.getInstance();
-    int year = calendar.get(Calendar.YEAR);
-    int month = calendar.get(Calendar.MONTH) + 1;
-    int day = calendar.get(Calendar.DATE);
-
-    String monthStr = "" + month;
-    String dayStr = "" + day;
-    if(month<10)
-    {
-        monthStr = "0" + month;
-    }
-    if(day<10)
-    {
-        dayStr = "0" + day;
-    }
-    if (cjrqz == null) cjrqz =    year+"-"+monthStr+"-"+dayStr;
-    if (hzrqz == null) hzrqz =    year+"-"+monthStr+"-"+dayStr;
-
-
-    if (djlx == null) djlx = "";
-	
-	
-	
---%>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -119,6 +27,7 @@
 <script type="text/javascript">
 	var app_path= "";
 	var takes;
+	var pageSize;
 	//var start;
 	function viewReport(){  
    	   //拼 装转发参数
@@ -247,11 +156,157 @@
        }else{
     	   app_path = "${pageContext.request.contextPath}"+"/collection1/select?q="+queryStr+fqStr+"&wt=json&indent=true&start=0&rows=20&sort=rownoi+asc";
        }
-      	init_ent_grid(app_path);
+      	//init_ent_grid(app_path);
+      	
+      	
+      	
+      	create_table(app_path);
+      	
+      	
+      	
+      	
+      	
+      	//AddRow()
 <%-- 		   //window.location.href = "/topbirt/frameset?__report=EntBaseInfoQuery_h.rptdesign" + queryStr + "=commoninfo&__overwrite=true"; --%>
     
     }
+	
+	function create_table(app_path){
+		 $.ajax({
+             type : "post",
+             url : app_path,
+             dataType : "json",
+             success : function (data) {
+               takes = data.responseHeader.QTime;
+               totals=data.response.numFound;
+               pageSize=data.responseHeader.params.rows;
+			   rows= data.response.docs;
+			   
+			   var table=document.getElementById("DetailInfo");
+		        var oBody=table.tBodies[0];
+		        var r=oBody.rows;
+		        for(var i=r.length;i>=1;i--)
+		        {
+		            oBody.deleteRow(rows[i]);
+		        } 
+			   
+			   for(var i = 0;i<rows.length;i++){
+				   AddRow(rows[i]);
+			   }
+			   create_pp(totals,pageSize);
+			   $("#tm").text("查询结果耗时: " +takes+" 毫秒");
+			   $('#pp').pagination('refresh',{	
+					total: totals,
+					pageNumber: 1
+				});
+             },
+             error : function () {
+                 error.apply(this, arguments);
+             }
+         });
+	}
+	
+	function create_pp(totals,pageSize){
+		$('#pp').pagination({  
+			total:totals,  
+			pageSize:pageSize,  
+			showPageList:false,
+			showRefresh:false,
+			onSelectPage:function(pageNum, pageSize) {
+				
+				var start = app_path.indexOf("&start");
+				var end  = app_path.indexOf("&rows");
+				if(start==-1&&end==-1){
+					app_path =  app_path+"&start="+((pageNum-1)*pageSize)+"&rows=20";
+				}else{
+					app_path =app_path.substr(0,start)+"&start="+((pageNum-1)*pageSize)+"&rows=20";
+					
+				}
+				
+				$.ajax({
+		             type : "post",
+		             url : app_path,
+		             dataType : "json",
+		             success : function (data) {
+		               takes = data.responseHeader.QTime;
+		               totals=data.response.numFound;
+		               pageSize=data.responseHeader.params.rows;
+					   rows= data.response.docs;
+					   
+					   var table=document.getElementById("DetailInfo");
+				        var oBody=table.tBodies[0];
+				        var r=oBody.rows;
+				        for(var i=r.length;i>=1;i--)
+				        {
+				            oBody.deleteRow(rows[i]);
+				        } 
+					   
+					   for(var i = 0;i<rows.length;i++){
+						   AddRow(rows[i]);
+					   }
+					   //create_pp(totals,pageSize);
+					   $("#tm").text("查询结果耗时: " +takes+" 毫秒");
+					   //success(row);
+		             },
+		             error : function () {
+		                 error.apply(this, arguments);
+		             }
+		         });
+				//reload(number,size,pager.pagination('options').total);
+			},
+			onBeforeRefresh:function(number, size){
+				//clearGrid();
+			}
+		});  
+
 		
+	}
+	
+	
+	
+	
+	
+
+	function AddRow(row){
+		
+		var table=document.getElementById("DetailInfo");
+        var oBody=table.tBodies[0];
+        var rowIndex=oBody.rows.length;
+        oBody.insertRow(rowIndex);
+        
+        oBody.rows[rowIndex].insertCell(0);
+        oBody.rows[rowIndex].cells[0].appendChild(document.createTextNode(row.entname));
+        oBody.rows[rowIndex].cells[0].noWrap=true;
+        
+        oBody.rows[rowIndex].insertCell(1);
+        oBody.rows[rowIndex].cells[1].appendChild(document.createTextNode(row.regno));
+        oBody.rows[rowIndex].cells[1].noWrap=true;
+        
+        oBody.rows[rowIndex].insertCell(2);
+        oBody.rows[rowIndex].cells[2].appendChild(document.createTextNode(row.tel));
+        oBody.rows[rowIndex].cells[2].noWrap=true;
+        
+        oBody.rows[rowIndex].insertCell(3);
+        oBody.rows[rowIndex].cells[3].appendChild(document.createTextNode(row.enttypename));
+        oBody.rows[rowIndex].cells[3].noWrap=true;
+        
+        oBody.rows[rowIndex].insertCell(4);
+        oBody.rows[rowIndex].cells[4].appendChild(document.createTextNode(row.industryphyname));
+        oBody.rows[rowIndex].cells[4].noWrap=true;
+        
+        oBody.rows[rowIndex].insertCell(5);
+        oBody.rows[rowIndex].cells[5].appendChild(document.createTextNode(row.industrycoxiname));
+        oBody.rows[rowIndex].cells[5].noWrap=true;
+        
+        oBody.rows[rowIndex].insertCell(6);
+        oBody.rows[rowIndex].cells[6].appendChild(document.createTextNode(row.lerep));
+        oBody.rows[rowIndex].cells[6].noWrap=true;
+        
+        oBody.rows[rowIndex].insertCell(7);
+        oBody.rows[rowIndex].cells[7].appendChild(document.createTextNode(row.oploc));
+        oBody.rows[rowIndex].cells[7].noWrap=true;
+        
+	}
 		
 		
 		function init_ent_grid(app_path){ 
@@ -332,16 +387,16 @@
 		                    {field:'zzczb',title:'总注册资本'},
 		                    {field:'zczbzmy',title:'注册资本折美元'},
 		                    
-		                    {field:'estDate',title:'创建日期'/* ,formatter:_format */},
-		                    {field:'apprdate',title:'核准日期'/* ,formatter:_format */},
+		                    {field:'estDate',title:'创建日期',formatter:_format},
+		                    {field:'apprdate',title:'核准日期',formatter:_format},
 		                    
 		                    {field:'RegCap',title:'中方认缴资本'},
 		                    {field:'RecCap',title:'中方实缴资本'},
 		                    {field:'ForRegCap',title:'外方认缴资本'},
 		                    {field:'ForRecCap',title:'外方实缴资本'},
 		                    
-		                    {field:'opFrom',title:'经营日期起'/* ,formatter:_format */},
-		                    {field:'opTo',title:'经营日期止'/* ,formatter:_format */},
+		                    {field:'opFrom',title:'经营日期起',formatter:_format},
+		                    {field:'opTo',title:'经营日期止',formatter:_format},
 		                    {field:'statename',title:'企业状态'},
 		                    {field:'optypename',title:'经营类别'},
 		                    {field:'superorgname',title:'管辖单位名称'},
@@ -363,10 +418,6 @@
 						}
 
 		            });
-		    
-		    
-		    
-		    
 		    
 		}
 		function entname_link(value,row,index){
@@ -467,64 +518,6 @@
         {
             var zhi=document.getElementById('qylx_zl').value;
             //alert(zhi);
-            <%--var url="<%=rootPath%>/pages/query/reg/qylxxl.jsp?qylx_zl="+escape(zhi);%-->
-           // alert(url);
-            if(window.XMLHttpRequest)
-            {
-				req=new XMLHttpRequest();
-            }else if(window.ActiveXObject)
-            {
-                req=new ActiveXObject("Microsoft.XMLHTTP");
-            }
-            if(req)
-            {
-                req.open("GET",url,true);
-                req.onreadystatechange=callback;
-                req.send(null);
-            }
-        }
-
-        function callback()
-        {
-            if(req.readyState == 4)
-            {
-                if(req.status == 200)
-                {
-                    parseMessage();
-                }else{
-                    alert("Not able to retrieve description"+req.statusText);
-                }
-            }
-        }
-        function parseMessage()
-        {
-			var xmlDoc=req.responseXML.documentElement;
-            var xSel=xmlDoc.getElementsByTagName('select');
-            var select_root=document.getElementById('qylx_xl');
-            select_root.options.length=0;
-            //alert(select_root);
-            for(var i=0;i<xSel.length;i++)
-            {
-                var xValue=xSel[i].childNodes[0].firstChild.nodeValue;
-                var xText=xSel[i].childNodes[1].firstChild.nodeValue;
-                var option=new Option(xText,xValue);
-                try{
-                    select_root.add(option);
-                }catch(e){
-                }
-				}
-           // alert(option);
-        }
-
-    </SCRIPT>
-	<SCRIPT type="text/javascript">
-      var req;
-	
-      function hylb_Select1()
-        {
-            var hylb=document.getElementById("hmt").value;
-            //alert(zhi);
-            <%--var url1="<%=rootPath%>/pages/query/reg/hylbdl.jsp?hylb="+escape(hylb);--%>
            // alert(url);
             if(window.XMLHttpRequest)
             {
@@ -1038,18 +1031,40 @@
 			</td>
 		</tr>
 	</table>
-	<table border="1" align="center" style="width: 1000px; height: 620px" >
-		<tr>
-		<td>
-		<table id="demoGrid"></table>
-		
-	</td>
+<div style="height:500px width:1000px">
+<table id="DetailInfo" border="1" align="center" style = "border:solid #add9c0; border-width:1px 0px 0px 1px;">
+	<thead>
+	<tr>
+	<th id = "tm" style = "border:solid #add9c0; border-width:0px 1px 1px 0px; padding:10px 0px;"  colspan="8">查询结果耗时</th>
 	</tr>
-					</table>
-					<table id="dem3oGrid" style="height:50px"></table>
+    <tr>
+      <th style = "border:solid #add9c0; border-width:0px 1px 1px 0px; padding:10px 0px;">企业名称</th>
+      <th style = "border:solid #add9c0; border-width:0px 1px 1px 0px; padding:10px 0px;">注册号</th>
+      <th style = "border:solid #add9c0; border-width:0px 1px 1px 0px; padding:10px 0px;">电话号码</th>
+      <th style = "border:solid #add9c0; border-width:0px 1px 1px 0px; padding:10px 0px;">企业类型</th>
+      <th style = "border:solid #add9c0; border-width:0px 1px 1px 0px; padding:10px 0px;"> 行业门类名称</th>
+      <th style = "border:solid #add9c0; border-width:0px 1px 1px 0px; padding:10px 0px;"> 行业细类名称 </th>
+      <th style = "border:solid #add9c0; border-width:0px 1px 1px 0px; padding:10px 0px;"> 法人代表人 </th>
+      <th style = "border:solid #add9c0; border-width:0px 1px 1px 0px; padding:10px 0px;"> 经营地址</th>
+    </tr>
+    </thead>
+    <tbody>
+     <th style = "border:solid #add9c0; border-width:0px 1px 1px 0px; padding:10px 0px;"></th>
+	</tbody>
+    <tfoot>
+    	<tr>
+	    	<th  colspan="8">
+	    	<div id="pp" style="background:#efefef;border:1px solid #ccc;"></div>  
+	    	</th>
+    	</tr>
+    </tfoot>
+</table>
+</div>
 	<!--页面框架end-->
 </body>
 </html>
+
+
 <script language="javascript">
 
     //页面中插入title

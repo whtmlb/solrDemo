@@ -56,6 +56,12 @@
       <param-value>${context}/#/~logging</param-value>
     </init-param>
   </servlet>
+    <servlet>
+    <description></description>
+    <display-name>SolrQueryServlet</display-name>
+    <servlet-name>SolrQueryServlet</servlet-name>
+    <servlet-class>solrquery.SolrQueryServlet</servlet-class>
+  </servlet>
   <servlet>
     <servlet-name>SolrRestApi</servlet-name>
     <servlet-class>org.restlet.ext.servlet.ServerServlet</servlet-class>
@@ -87,6 +93,10 @@
   <servlet-mapping>
     <servlet-name>LoadAdminUI</servlet-name>
     <url-pattern>/admin.html</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>SolrQueryServlet</servlet-name>
+    <url-pattern>/SolrQuery</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>SolrRestApi</servlet-name>

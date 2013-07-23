@@ -119,7 +119,7 @@
 <script type="text/javascript">
 	var app_path= "";
 	var takes;
-	//var start;
+	var start;
 	function viewReport(){  
    	   //拼 装转发参数
    	   var queryStr = "";
@@ -136,7 +136,7 @@
 	     	queryStr += encodeURIComponent(" +lerep:") + encodeURIComponent('*'+document.all.fddbr.value+'*');//法定代表人
 	   }
        if(document.all.jydz.value!=""){
-       		queryStr += encodeURIComponent(" +oploc:") + encodeURIComponent('*'+document.all.jydz.value+'*');//经营场所
+       		queryStr += encodeURIComponent(" +oploc:") + encodeURIComponent('*'+document.all.jydz.value+'*"');//经营场所
        }
        if(document.all.dah.value!=""){
         	queryStr += encodeURIComponent(" +archno:") + encodeURIComponent('*'+document.all.dah.value);//档案号
@@ -242,10 +242,10 @@
 		   	  	queryStr += encodeURIComponent(" +superorgid:") + encodeURIComponent(document.all.gxdw.value);//管辖单位
       }
        if(fqStr == ""){
-        	app_path = "${pageContext.request.contextPath}"+"/collection1/select?q="+queryStr+"&wt=json&indent=true&start=0&rows=20&sort=rownoi+asc";
+        	app_path = "${pageContext.request.contextPath}"+"/collection1/select?q="+queryStr+"&wt=json&indent=true&start=0&rows=20&sort=rownoi+desc";
     	   
        }else{
-    	   app_path = "${pageContext.request.contextPath}"+"/collection1/select?q="+queryStr+fqStr+"&wt=json&indent=true&start=0&rows=20&sort=rownoi+asc";
+    	   app_path = "${pageContext.request.contextPath}"+"/collection1/select?q="+queryStr+fqStr+"&wt=json&indent=true&start=0&rows=20&sort=rownoi+desc";
        }
       	init_ent_grid(app_path);
 <%-- 		   //window.location.href = "/topbirt/frameset?__report=EntBaseInfoQuery_h.rptdesign" + queryStr + "=commoninfo&__overwrite=true"; --%>
@@ -271,7 +271,6 @@
 		                    url : opts.url,
 		                    dataType : "json",
 		                    success : function (data) {
-		                      takes = data.responseHeader.QTime;
 		                      totals=data.response.numFound;
              				  row= data.response.docs;
              				 success(row);
@@ -308,12 +307,12 @@
 	                    	   return r;
 	                    },
 	                    onLoadSuccess:function(data){
-	                    	
+	                    	takes = new Date().getTime()-start;
 	                    	$("#demoGrid").datagrid("getPanel").panel("setTitle","查询结果展示          耗时  "+takes+" 毫秒");
 	                    	
 	                    },
 	                    onBeforeLoad:function(param){
-	                    	//start = new Date().getTime();
+	                    	start = new Date().getTime();
 	                    },
 		                columns:[[
 		                    {field:'entname',title:'企业名称',formatter:entname_link},
@@ -332,16 +331,16 @@
 		                    {field:'zzczb',title:'总注册资本'},
 		                    {field:'zczbzmy',title:'注册资本折美元'},
 		                    
-		                    {field:'estDate',title:'创建日期'/* ,formatter:_format */},
-		                    {field:'apprdate',title:'核准日期'/* ,formatter:_format */},
+		                    {field:'estDate',title:'创建日期',formatter:_format},
+		                    {field:'apprdate',title:'核准日期',formatter:_format},
 		                    
 		                    {field:'RegCap',title:'中方认缴资本'},
 		                    {field:'RecCap',title:'中方实缴资本'},
 		                    {field:'ForRegCap',title:'外方认缴资本'},
 		                    {field:'ForRecCap',title:'外方实缴资本'},
 		                    
-		                    {field:'opFrom',title:'经营日期起'/* ,formatter:_format */},
-		                    {field:'opTo',title:'经营日期止'/* ,formatter:_format */},
+		                    {field:'opFrom',title:'经营日期起',formatter:_format},
+		                    {field:'opTo',title:'经营日期止',formatter:_format},
 		                    {field:'statename',title:'企业状态'},
 		                    {field:'optypename',title:'经营类别'},
 		                    {field:'superorgname',title:'管辖单位名称'},
@@ -1022,7 +1021,7 @@
 					<table class="table-button">
 						<tr>
 							<td><input type="button" name="viewReportB" value="确定"
-								onclick="viewReport()" /> <%--
+								onclick="viewReport_gx()" /> <%--
 			  
 
 								<%--}--%> <input type="reset" class="cancle" value="重置" /> <input
@@ -1046,7 +1045,6 @@
 	</td>
 	</tr>
 					</table>
-					<table id="dem3oGrid" style="height:50px"></table>
 	<!--页面框架end-->
 </body>
 </html>
@@ -1059,262 +1057,7 @@
 
 
 <script type="text/javascript">
-    //getPageTitle();     //设置导航栏的标题
 
-
-
-   function viewReport1() {
-    //if (checkYear()) {
-    var sqlStr = "&qysx=14";
-     window.showModalDialog('/pages/query/reg/EntTjsysm.jsp?sqlStr='+sqlStr,sqlStr,'status:no;center:yes;help:no;minimize:no;maximize:no;close:no;dialogWidth:560px; dialogHeight:200px');
-}
-
-    function viewReport9999999999999999() { 
-    	alert("111");   //拼装转发参数
-        if (!isRequired())return false;
-        var root_bb= document.URL  ;
-                //  root_bb= root_bb.slice(7) ;
-                  var sz_root=root_bb.split("/");
-                  root_bb=sz_root[2];
-
-        var queryStr = "&qymc=" + document.all.qymc.value;
-        queryStr += "&zch=" + document.all.zch.value;
-        queryStr += "&fddbr=" + document.all.fddbr.value;
-        queryStr += "&jydz=" + document.all.jydz.value;
-        queryStr += "&jyfw=" + document.all.jyfw.value;
-
-
-//        alert(""+queryStr)
-
-     if(document.all.hmt.value=="99")
-		{
-          queryStr += "&hmt=" + "";
-         }
-         else
-         {
-          queryStr += "&hmt=" + document.all.hmt.value;
-         }
-
-		  if(document.all.hmi.value=="99")
-		{
-          queryStr += "&hmi=" + "";
-         }
-         else
-         {
-          queryStr += "&hmi=" + document.all.hmi.value;
-         }
-
-		 queryStr += "&xyjb=" + document.all.xyjb.value;
-
-		  if(document.all.hmm.value=="99")
-		{
-          queryStr += "&hmm=" + "";
-         }
-         else
-         {
-          queryStr += "&hmm=" + document.all.hmm.value;
-         }
-
-		  if(document.all.hyxxl.value=="99")
-		{
-          queryStr += "&hyxl=" + "";
-         }
-         else
-         {
-          queryStr += "&hyxl=" + document.all.hyxxl.value;
-         }
-
-        queryStr += "&qylx_zl=" + document.all.qylx_zl.value;
-        if(document.all.qylx_xl.value=='99'){
-			queryStr += "&qylx_xl=";
-		}
-		else
-		{
-			queryStr += "&qylx_xl=" + document.all.qylx_xl.value;
-		}
-        queryStr += "&zt=" + document.all.zt.value;
-        queryStr += "&fxhy=" + document.all.fxhy.value;
-        queryStr += "&jylb=" + document.all.jylb.value;
-        queryStr += "&cjrqq=" + document.all.cjrqq.value;
-        queryStr += "&cjrqz=" + document.all.cjrqz.value;
-        queryStr += "&hzrqq=" + document.all.hzrqq.value;
-        queryStr += "&hzrqz=" + document.all.hzrqz.value;
-        queryStr += "&djlx=" + document.all.djlx.value;
-        queryStr += "&dah=" + document.all.dah.value;
-           queryStr += "&root_bb=" + root_bb;
-        if(document.all.chk1.checked )
-         {
-         queryStr += "&djjgkg=1";
-         }
-         else
-         {
-         queryStr += "&djjgkg=0";
-         }
-    var qysx =  document.all.qysx;
-    var nzkg =  qysx[0].checked?'01':'';
-    var wzkg =  qysx[1].checked?'02':'';
-    var sykg =  qysx[2].checked?'03':'';
-    var gtkg =  qysx[3].checked?'04':'';
-	var nhkg =  qysx[4].checked?'07':'';
-	
-
-    queryStr += "&nzkg="+ nzkg ;
-    queryStr += "&wzkg="+ wzkg ;
-    queryStr += "&sykg="+ sykg ;
-    queryStr += "&gtkg="+ gtkg ;
-	queryStr += "&nhkg="+ nhkg ;
-   alert(123);
-        
-            queryStr += "&gxdw=" + document.all.gxdw.value;
-            queryStr += "&djjg=" + document.all.djjgone.value;
-            if(document.all.chk2.checked )
-             {
-             queryStr += "&gxdwkg=1";
-             }
-             else
-             {
-             queryStr += "&gxdwkg=0";
-             }
-    
-     
-		   window.location.href = "/topbirt/frameset?__report=EntBaseInfoQuery_h.rptdesign" + queryStr + "<%--=commoninfo--%>&__overwrite=true";
-		
-     if(document.all.rad2[1].checked ){    
-      	queryStr += "&djjg=" + document.all.djjgtwo.value;
-	  
-            window.location.href = "/topbirt/frameset?__report=EntBaseNogxdw_h.rptdesign" + queryStr + "<%--=commoninfo--%>&__overwrite=true";
-       
-			}
-     if(document.all.rad2[2].checked ){     
-     	queryStr += "&djjg=" + document.all.djjgtwo.value;
-        
-			window.location.href = "/topbirt/frameset?__report=EntBasebxz_h.rptdesign" + queryStr + "<%--=commoninfo--%>&__overwrite=true";
-			//alert(queryStr);
-		
-            
-        }
-    }
-    function viewReport_xz() {    //拼装转发参数
-        if (!isRequired())return false;
-        var root_bb= document.URL  ;
-                //  root_bb= root_bb.slice(7) ;
-                  var sz_root=root_bb.split("/");
-                  root_bb=sz_root[2];
-
-        var queryStr = "&qymc=" + document.all.qymc.value;
-        queryStr += "&zch=" + document.all.zch.value;
-        queryStr += "&fddbr=" + document.all.fddbr.value;
-        queryStr += "&jydz=" + document.all.jydz.value;
-        queryStr += "&jyfw=" + document.all.jyfw.value;
-
-
-//        alert(""+queryStr)
-
-     if(document.all.hmt.value=="99")
-		{
-          queryStr += "&hmt=" + "";
-         }
-         else
-         {
-          queryStr += "&hmt=" + document.all.hmt.value;
-         }
-
-		  if(document.all.hmi.value=="99")
-		{
-          queryStr += "&hmi=" + "";
-         }
-         else
-         {
-          queryStr += "&hmi=" + document.all.hmi.value;
-         }
-
-		 queryStr += "&xyjb=" + document.all.xyjb.value;
-
-		  if(document.all.hmm.value=="99")
-		{
-          queryStr += "&hmm=" + "";
-         }
-         else
-         {
-          queryStr += "&hmm=" + document.all.hmm.value;
-         }
-        if(document.all.hyxxl.value=="99")
-		{
-          queryStr += "&hyxl=" + "";
-         }
-         else
-         {
-          queryStr += "&hyxl=" + document.all.hyxxl.value;
-         }
-        queryStr += "&qylx_zl=" + document.all.qylx_zl.value;
-        if(document.all.qylx_xl.value=='99'){
-			queryStr += "&qylx_xl=";
-		}
-		else
-		{
-			queryStr += "&qylx_xl=" + document.all.qylx_xl.value;
-		}
-        queryStr += "&zt=" + document.all.zt.value;
-        queryStr += "&fxhy=" + document.all.fxhy.value;
-        queryStr += "&jylb=" + document.all.jylb.value;
-        queryStr += "&cjrqq=" + document.all.cjrqq.value;
-        queryStr += "&cjrqz=" + document.all.cjrqz.value;
-        queryStr += "&hzrqq=" + document.all.hzrqq.value;
-        queryStr += "&hzrqz=" + document.all.hzrqz.value;
-        queryStr += "&djlx=" + document.all.djlx.value;
-        queryStr += "&dah=" + document.all.dah.value;
-           queryStr += "&root_bb=" + root_bb;
-        if(document.all.chk1.checked )
-         {
-         queryStr += "&djjgkg=1";
-         }
-         else
-         {
-         queryStr += "&djjgkg=0";
-         }
-    var qysx =  document.all.qysx;
-    var nzkg =  qysx[0].checked?'01':'';
-    var wzkg =  qysx[1].checked?'02':'';
-    var sykg =  qysx[2].checked?'03':'';
-    var gtkg =  qysx[3].checked?'04':'';
-	var nhkg =  qysx[4].checked?'07':'';
-	
-
-    queryStr += "&nzkg="+ nzkg ;
-    queryStr += "&wzkg="+ wzkg ;
-    queryStr += "&sykg="+ sykg ;
-    queryStr += "&gtkg="+ gtkg ;
-	queryStr += "&nhkg="+ nhkg ;
-    if(document.all.rad2[0].checked )
-        {
-            queryStr += "&gxdw=" + document.all.gxdw.value;
-            queryStr += "&djjg=" + document.all.djjgone.value;
-            if(document.all.chk2.checked )
-             {
-             queryStr += "&gxdwkg=1";
-             }
-             else
-             {
-             queryStr += "&gxdwkg=0";
-             }
-     
-		   window.location.href = "/topbirt/frameset?__report=EntBaseInfoQuery_xz.rptdesign" + queryStr + "<%--=commoninfo--%>&__overwrite=true";
-		}
-     if(document.all.rad2[1].checked )
-      {    queryStr += "&djjg=" + document.all.djjgtwo.value;
-	  
-            window.location.href = "/topbirt/frameset?__report=EntBaseNogxdw_xz.rptdesign" + queryStr + "<%--=commoninfo--%>&__overwrite=true";
-       
-			}
-     if(document.all.rad2[2].checked )
-      {     queryStr += "&djjg=" + document.all.djjgtwo.value;
-        
-			window.location.href = "/topbirt/frameset?__report=EntBasebxz_xz.rptdesign" + queryStr + "<%--=commoninfo--%>&__overwrite=true";
-			//alert(queryStr);
-		
-            
-        }
-    }
 	function viewReport_gx() {    //拼装转发参数
         if (!isRequired())return false;
         var root_bb= document.URL  ;
@@ -1418,146 +1161,28 @@
              {
              queryStr += "&gxdwkg=0";
              }
-     
-		   window.location.href = "/topbirt/frameset?__report=EntBaseInfoQuery_gx.rptdesign" + queryStr + "<%--=commoninfo--%>&__overwrite=true";
+           queryStr +="&start=0&rows=20";
+           app_path= "http://localhost:8080/solr/SolrQuery?"  + queryStr;
+		  // window.location.href = "http://localhost:8080/solr/SolrQuery?"  + queryStr;
+		   init_ent_grid(app_path);
 		}
      if(document.all.rad2[1].checked )
       {    queryStr += "&djjg=" + document.all.djjgtwo.value;
 	  
-            window.location.href = "/topbirt/frameset?__report=EntBaseNogxdw_gx.rptdesign" + queryStr + "<%--=commoninfo--%>&__overwrite=true";
+            window.location.href = "http://localhost:8080/solr/SolrQuery?" + queryStr ;
        
 			}
      if(document.all.rad2[2].checked )
       {     queryStr += "&djjg=" + document.all.djjgtwo.value;
         
-			window.location.href = "/topbirt/frameset?__report=EntBasebxz_gx.rptdesign" + queryStr + "<%--=commoninfo--%>&__overwrite=true";
+			window.location.href = "http://localhost:8080/solr/SolrQuery?" + queryStr;
 			//alert(queryStr);
 		
             
         }
     }
 
-	 function viewReport_qh() {    //拼装转发参数
-        if (!isRequired())return false;
-        var root_bb= document.URL  ;
-                //  root_bb= root_bb.slice(7) ;
-                  var sz_root=root_bb.split("/");
-                  root_bb=sz_root[2];
-
-        var queryStr = "&qymc=" + document.all.qymc.value;
-        queryStr += "&zch=" + document.all.zch.value;
-        queryStr += "&fddbr=" + document.all.fddbr.value;
-        queryStr += "&jydz=" + document.all.jydz.value;
-        queryStr += "&jyfw=" + document.all.jyfw.value;
-
-
-//        alert(""+queryStr)
-
-     if(document.all.hmt.value=="99")
-		{
-          queryStr += "&hmt=" + "";
-         }
-         else
-         {
-          queryStr += "&hmt=" + document.all.hmt.value;
-         }
-
-		  if(document.all.hmi.value=="99")
-		{
-          queryStr += "&hmi=" + "";
-         }
-         else
-         {
-          queryStr += "&hmi=" + document.all.hmi.value;
-         }
-
-		 queryStr += "&xyjb=" + document.all.xyjb.value;
-
-		  if(document.all.hmm.value=="99")
-		{
-          queryStr += "&hmm=" + "";
-         }
-         else
-         {
-          queryStr += "&hmm=" + document.all.hmm.value;
-         }
-           if(document.all.hyxxl.value=="99")
-		{
-          queryStr += "&hyxl=" + "";
-         }
-         else
-         {
-          queryStr += "&hyxl=" + document.all.hyxxl.value;
-         }
-        queryStr += "&qylx_zl=" + document.all.qylx_zl.value;
-        if(document.all.qylx_xl.value=='99'){
-			queryStr += "&qylx_xl=";
-		}
-		else
-		{
-			queryStr += "&qylx_xl=" + document.all.qylx_xl.value;
-		}
-        queryStr += "&zt=" + document.all.zt.value;
-        queryStr += "&fxhy=" + document.all.fxhy.value;
-        queryStr += "&jylb=" + document.all.jylb.value;
-        queryStr += "&cjrqq=" + document.all.cjrqq.value;
-        queryStr += "&cjrqz=" + document.all.cjrqz.value;
-        queryStr += "&hzrqq=" + document.all.hzrqq.value;
-        queryStr += "&hzrqz=" + document.all.hzrqz.value;
-        queryStr += "&djlx=" + document.all.djlx.value;
-        queryStr += "&dah=" + document.all.dah.value;
-           queryStr += "&root_bb=" + root_bb;
-        if(document.all.chk1.checked )
-         {
-         queryStr += "&djjgkg=1";
-         }
-         else
-         {
-         queryStr += "&djjgkg=0";
-         }
-    var qysx =  document.all.qysx;
-    var nzkg =  qysx[0].checked?'01':'';
-    var wzkg =  qysx[1].checked?'02':'';
-    var sykg =  qysx[2].checked?'03':'';
-    var gtkg =  qysx[3].checked?'04':'';
-	var nhkg =  qysx[4].checked?'07':'';
 	
-
-    queryStr += "&nzkg="+ nzkg ;
-    queryStr += "&wzkg="+ wzkg ;
-    queryStr += "&sykg="+ sykg ;
-    queryStr += "&gtkg="+ gtkg ;
-	queryStr += "&nhkg="+ nhkg ;
-    if(document.all.rad2[0].checked )
-        {
-            queryStr += "&gxdw=" + document.all.gxdw.value;
-            queryStr += "&djjg=" + document.all.djjgone.value;
-            if(document.all.chk2.checked )
-             {
-             queryStr += "&gxdwkg=1";
-             }
-             else
-             {
-             queryStr += "&gxdwkg=0";
-             }
-     
-		   window.location.href = "/topbirt/frameset?__report=EntBaseInfoQuery_qh.rptdesign" + queryStr + "<%--=commoninfo--%>&__overwrite=true";
-		}
-     if(document.all.rad2[1].checked )
-      {    queryStr += "&djjg=" + document.all.djjgtwo.value;
-	  
-            window.location.href = "/topbirt/frameset?__report=EntBaseNogxdw_qh.rptdesign" + queryStr + "<%--=commoninfo--%>&__overwrite=true";
-       
-			}
-     if(document.all.rad2[2].checked )
-      {     queryStr += "&djjg=" + document.all.djjgtwo.value;
-        
-			window.location.href = "/topbirt/frameset?__report=EntBasebxz_qh.rptdesign" + queryStr + "<%--=commoninfo--%>&__overwrite=true";
-			//alert(queryStr);
-		
-            
-        }
-    }
     function isRequired() { //检查日期输入域
         var cjrqq = document.all.cjrqq.value;
         var cjrqz = document.all.cjrqz.value;
