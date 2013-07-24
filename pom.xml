@@ -23,12 +23,12 @@
     			<artifactId>slf4j-api</artifactId>
     		</exclusion> 
     	</exclusions>
-    	<version>4.3.0</version>
+    	<version>4.4.0</version>
     </dependency>
     <dependency>
     	<groupId>org.apache.solr</groupId>
     	<artifactId>solr-dataimporthandler</artifactId>
-    	<version>4.3.0</version>
+    	<version>4.4.0</version>
     </dependency>
    
   </dependencies>
